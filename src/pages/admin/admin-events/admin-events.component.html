@@ -1,0 +1,121 @@
+<p>admin-events works!</p>
+<div class="container py-4">
+    <h2 class="mb-4 text-center">Pending Events</h2>
+
+    <div *ngIf="events.length === 0" class="alert alert-info text-center">No pending events.</div>
+
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="col" *ngFor="let event of events">
+            <div class="card shadow-sm h-100 border-0" [class.bg-light]="expandedEventId === event.id">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <img *ngIf="event.imageUrl" [src]="getFullFileUrl(event.imageUrl)" alt="{{event.name}}"
+                            style="width:70px;height:70px;object-fit:cover;border-radius:8px;margin-right:16px;">
+                        <div class="flex-grow-1">
+                            <h5 class="card-title mb-1">{{ event.name }}</h5>
+                            <p class="mb-1"><b>Type:</b> {{ event.eventType }} <span *ngIf="event.date">| <b>Date:</b>
+                                    {{ event.date | date:'mediumDate' }}</span></p>
+                            <button class="btn btn-link p-0 text-primary" (click)="toggleExpand(event.id)">
+                                {{ expandedEventId === event.id ? 'Hide Details' : 'Show Details' }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Details: collapsible -->
+                    <div [hidden]="expandedEventId !== event.id" class="mt-3">
+                        <hr>
+                        <p *ngIf="event.description"><b>Description:</b> {{ event.description }}</p>
+                        <ng-container [ngSwitch]="event.eventType">
+                            <div *ngSwitchCase="'Match'">
+                                <p *ngIf="event.stadiumName"><b>Stadium:</b> {{ event.stadiumName }}</p>
+                                <p *ngIf="event.teamA"><b>Team A:</b> {{ event.teamA }}</p>
+                                <p *ngIf="event.teamB"><b>Team B:</b> {{ event.teamB }}</p>
+                            </div>
+                            <div *ngSwitchCase="'Concert'">
+                                <p *ngIf="event.performers"><b>Performers:</b> {{ event.performers }}</p>
+                                <p *ngIf="event.placeName"><b>Place:</b> {{ event.placeName }}</p>
+                            </div>
+                            <div *ngSwitchDefault>
+                                <p *ngIf="event.placeName"><b>Place:</b> {{ event.placeName }}</p>
+                            </div>
+                        </ng-container>
+
+                        <!-- Show Map if available -->
+                        <div *ngIf="event.latitude && event.longitude" class="mb-3">
+                            <b>Event Location:</b>
+                            <div id="adminEventMap-{{event.id}}"
+                                style="height: 200px; width: 100%; border-radius: 8px; margin: 12px 0;"></div>
+                            <div>
+                                <span class="badge bg-light text-dark">
+                                    Lat: {{ event.latitude }} &nbsp; | &nbsp; Lng: {{ event.longitude }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Documents -->
+                        <div class="mb-2">
+                            <h6>Event Documents</h6>
+                            <ul class="list-unstyled ms-3">
+                                <li *ngIf="event.securityClearanceUrl"><b>Security Clearance:</b>
+                                    <a [href]="getFullFileUrl(event.securityClearanceUrl)" target="_blank">View</a>
+                                </li>
+                                <li *ngIf="event.publicLicenseFrontUrl"><b>Public License (Front):</b>
+                                    <a [href]="getFullFileUrl(event.publicLicenseFrontUrl)" target="_blank">View</a>
+                                </li>
+                                <li *ngIf="event.publicLicenseBackUrl"><b>Public License (Back):</b>
+                                    <a [href]="getFullFileUrl(event.publicLicenseBackUrl)" target="_blank">View</a>
+                                </li>
+                                <li *ngIf="event.civilProtectionApprovalFrontUrl"><b>Civil Protection Approval
+                                        (Front):</b>
+                                    <a [href]="getFullFileUrl(event.civilProtectionApprovalFrontUrl)"
+                                        target="_blank">View</a>
+                                </li>
+                                <li *ngIf="event.civilProtectionApprovalBackUrl"><b>Civil Protection Approval
+                                        (Back):</b>
+                                    <a [href]="getFullFileUrl(event.civilProtectionApprovalBackUrl)"
+                                        target="_blank">View</a>
+                                </li>
+                                <li *ngIf="event.eventInsuranceUrl"><b>Event Insurance:</b>
+                                    <a [href]="getFullFileUrl(event.eventInsuranceUrl)" target="_blank">View</a>
+                                </li>
+                                <li *ngIf="event.stripePaymentLink"><b>Stripe Payment Link:</b>
+                                    <a [href]="event.stripePaymentLink" target="_blank">{{ event.stripePaymentLink
+                                        }}</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Tickets -->
+                        <div *ngIf="event.ticketTypes?.length">
+                            <h6>Tickets</h6>
+                            <ul>
+                                <li *ngFor="let t of event.ticketTypes">
+                                    {{t.name}}: {{t.quantity}} left <span>({{t.price | currency}})</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div *ngIf="event.adminNote" class="alert alert-warning mt-2"><b>Admin Note:</b> {{
+                            event.adminNote }}</div>
+
+                        <!-- Approve/Reject -->
+                        <div class="d-flex align-items-center mt-3">
+                            <button class="btn btn-success btn-sm" (click)="approveEvent(event.id)">Approve</button>
+                            <button class="btn btn-outline-danger btn-sm ms-2" *ngIf="rejectingEventId !== event.id"
+                                (click)="startRejectEvent(event.id)">Reject</button>
+                        </div>
+
+                        <!-- Reject input -->
+                        <div *ngIf="rejectingEventId === event.id" class="mt-3 border p-2 rounded bg-light">
+                            <label><b>Rejection Note (required):</b></label>
+                            <textarea [(ngModel)]="rejectionNote" class="form-control mb-2" rows="2"></textarea>
+                            <div class="text-danger mb-2" *ngIf="errorMsg">{{ errorMsg }}</div>
+                            <button class="btn btn-danger btn-sm" (click)="submitRejectEvent()">Confirm Reject</button>
+                            <button class="btn btn-secondary btn-sm ms-2" (click)="cancelReject()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

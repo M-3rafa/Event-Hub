@@ -1,0 +1,75 @@
+.eye {
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #6c757d;
+  font-size: 1rem;
+}
+.login-container {
+  background: linear-gradient(135deg, #7847eb, #38bdf8);
+
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  background-color: #ffffffb2;
+  padding: 3rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  border-radius: 1rem;
+  width: 100%;
+  max-width: 500px;
+  border: none;
+}
+
+.login-title {
+  color: #7847eb;
+  font-size: 1.75rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.toggle-eye {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #7847eb;
+}
+
+.login-button {
+  background-color: #7847eb;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0.375rem;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.login-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.login-button:hover:not(:disabled) {
+  background-color: #6935da;
+}
+
+.forgot-link {
+  color: #f472b6;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.signup-link {
+  color: #7847eb;
+  text-decoration: none;
+  font-size: 0.9rem;
+}

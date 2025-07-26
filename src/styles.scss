@@ -1,1 +1,135 @@
-/* You can add global styles to this file, and also import other style files */
+// Brand Colors
+$color-primary: #7847eb; // Vibrant purple
+$color-secondary: #f472b6; // Soft pink
+$color-accent: #38bdf8; // Sky blue
+$color-success: #22c55e; // Green
+$color-danger: #ef4444; // Red
+$color-warning: #facc15; // Yellow
+
+// Neutrals
+$color-white: #ffffff;
+$color-light: #f9fafb;
+$color-gray: #6b7280;
+$color-dark: #1f2937;
+$color-black: #000000;
+
+// Backgrounds
+$bg-page: $color-light;
+$bg-card: $color-white;
+
+// Text
+$text-heading: $color-dark;
+$text-body: $color-gray;
+$text-link: $color-primary;
+
+// Buttons
+$btn-primary-bg: $color-primary;
+$btn-primary-text: $color-white;
+$btn-hover-bg: darken($color-primary, 10%);
+
+/* Gradient button */
+.btn-gradient {
+  background: linear-gradient(45deg, #7847eb, #f472b6);
+  color: white;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 25px;
+  transition: 0.3s;
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(45deg, #38bdf8, #7847eb);
+  color: white;
+}
+
+// sidebar style
+#sidebar-wrapper {
+  min-height: 100vh;
+  height: 100%;
+  width: 250px;
+  background-color: #2d1b55;
+  color: white;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+#sidebar-wrapper.collapsed {
+  width: 70px;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background: #7847eb;
+  justify-content: space-between;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.toggle-btn:hover {
+  transform: rotate(90deg);
+}
+
+.brand {
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.sidebar-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.sidebar-nav li {
+  width: 100%;
+}
+
+.sidebar-nav li a {
+  text-decoration: none;
+  color: #ccc;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  font-size: 15px;
+  transition: background 0.3s ease, color 0.3s ease;
+
+  i {
+    min-width: 20px;
+    text-align: center;
+    font-size: 18px;
+  }
+}
+
+.sidebar-nav li a:hover {
+  background: #38bdf8;
+  color: white;
+}
+
+.sidebar-nav li.active a {
+  background-color: #4c2a90;
+  color: white;
+  border-left: 4px solid #38bdf8;
+}
+
+.sidebar-nav li a.logout-link {
+  color: #ff6b6b;
+}
+
+.sidebar-nav li a.logout-link:hover {
+  background: #b91c1c;
+  color: white;
+}
