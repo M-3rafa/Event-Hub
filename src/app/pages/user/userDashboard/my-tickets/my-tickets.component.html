@@ -1,0 +1,51 @@
+<div class="container py-4">
+    <h2 class="mb-4 text-primary fw-bold border-bottom pb-2">
+        <i class="bi bi-ticket-perforated-fill me-2"></i>My Tickets
+    </h2>
+
+    <!-- تحميل -->
+    <div *ngIf="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-3 text-muted">Loading your tickets...</p>
+    </div>
+
+    <!-- لا توجد تذاكر -->
+    <div *ngIf="!loading && tickets.length === 0" class="alert alert-info text-center">
+        <i class="bi bi-info-circle me-2"></i>
+        You have no tickets booked.
+    </div>
+
+    <!-- عرض التذاكر -->
+    <div *ngIf="!loading && tickets.length > 0">
+        <div class="row g-4 row-cols-1 row-cols-md-2 row-cols-lg-3">
+            <div class="col" *ngFor="let ticket of tickets">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-dark fw-semibold">
+                            {{ ticket.eventName }}
+                            <span class="badge bg-secondary float-end">{{ ticket.ticketType }}</span>
+                        </h5>
+
+                        <ul class="list-unstyled mt-3 mb-2 text-muted">
+                            <li><i class="bi bi-calendar-event me-2 text-primary"></i><b>Date:</b> {{ ticket.eventDate |
+                                date:'medium' }}</li>
+                            <li><i class="bi bi-people-fill me-2 text-success"></i><b>Quantity:</b> {{ ticket.quantity
+                                }}</li>
+                            <li><i class="bi bi-cash-coin me-2 text-warning"></i><b>Total:</b> {{ ticket.totalPrice }}
+                                EGP</li>
+                        </ul>
+
+                        <button class="btn btn-outline-primary w-100 mt-2" (click)="downloadTicketPdf(ticket.id)">
+                            <i class="bi bi-file-earmark-pdf me-1"></i> Download PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- رسالة خطأ -->
+    <div *ngIf="errorMsg" class="alert alert-danger mt-4 text-center">
+        <i class="bi bi-exclamation-triangle me-2"></i>{{ errorMsg }}
+    </div>
+</div>

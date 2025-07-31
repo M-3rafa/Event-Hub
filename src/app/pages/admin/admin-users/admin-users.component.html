@@ -1,0 +1,101 @@
+<div class="container py-4">
+    <h2 class="mb-4 text-center">Users Management</h2>
+    <div class="card mb-3 p-3">
+        <div class="row g-2 align-items-end">
+            <div class="col-md-3">
+                <label class="form-label mb-0">Search by Username</label>
+                <input type="text" [(ngModel)]="searchTerm" class="form-control" (input)="filterUsers()"
+                    placeholder="Username..." />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label mb-0">Filter by Email</label>
+                <input type="text" [(ngModel)]="filterEmail" class="form-control" (input)="filterUsers()"
+                    placeholder="Email..." />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label mb-0">Filter by Role</label>
+                <select class="form-select" [(ngModel)]="filterRole" (change)="filterUsers()">
+                    <option value="">All Roles</option>
+                    <option value="User">User</option>
+                    <option value="Service Provider">Service Provider</option>
+                    <option value="Admin">Admin</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-secondary w-100" (click)="clearFilters()">Clear Filters</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive mb-5">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Role(s)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of filteredUsers; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>
+                        <a href="#" (click)="showDetails(user)">{{ user.userName }}</a>
+                    </td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        <span *ngFor="let r of user.roles" class="badge bg-info text-dark me-1">{{ r }}</span>
+                    </td>
+                    <td>
+                        <!-- Promote/Remove Admin -->
+                        <button *ngIf="!user.roles.includes('Admin')" class="btn btn-outline-success btn-sm me-1"
+                            (click)="makeAdmin(user.userName)">
+                            Promote to Admin
+                        </button>
+                        <button *ngIf="user.roles.includes('Admin')" class="btn btn-outline-warning btn-sm me-1"
+                            (click)="removeAdmin(user.userName)">
+                            Remove Admin
+                        </button>
+                        <!-- Remove Service Provider -->
+                        <button *ngIf="user.roles.includes('Service Provider')"
+                            class="btn btn-outline-secondary btn-sm me-1"
+                            (click)="removeServiceProvider(user.userName)">
+                            Make Normal User
+                        </button>
+                        <!-- Delete User -->
+                        <button class="btn btn-outline-danger btn-sm" (click)="deleteUser(user.id)">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div *ngIf="filteredUsers.length === 0" class="alert alert-info text-center">No users found.</div>
+    </div>
+
+    <!-- User Details Modal -->
+    <div class="modal fade show d-block" tabindex="-1" style="background:rgba(0,0,0,0.25);" *ngIf="selectedUser">
+        <div class="modal-dialog">
+            <div class="modal-content p-3">
+                <div class="modal-header">
+                    <h5 class="modal-title">User Details</h5>
+                    <button type="button" class="btn-close" (click)="closeDetails()"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>ID:</strong> {{ selectedUser.id }}</p>
+                    <p><strong>Username:</strong> {{ selectedUser.userName }}</p>
+                    <p><strong>Email:</strong> {{ selectedUser.email }}</p>
+
+                    <p><strong>Roles:</strong>
+                        <span *ngFor="let r of selectedUser?.roles" class="badge bg-primary me-1">{{ r }}</span>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" (click)="closeDetails()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

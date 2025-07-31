@@ -1,0 +1,49 @@
+<div id="sidebar-wrapper" [class.collapsed]="isCollapsed">
+    <div class="sidebar-header">
+        <button class="toggle-btn" (click)="toggleSidebar()">
+            <i class="fa fa-bars"></i>
+        </button>
+
+    </div>
+
+    <ul class="sidebar-nav">
+        <li class="nav-item active">
+            <a routerLink="Requests" class="nav-link">
+                <i class="fa fa-dashboard"></i>
+                <span class="link-text" *ngIf="!isCollapsed">Requests </span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a routerLink='Events' class="nav-link">
+                <i class="fa fa-calendar"></i>
+                <span class="link-text" *ngIf="!isCollapsed">Events</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a routerLink='Places' class="nav-link">
+                <i class="fa fa-calendar"></i>
+                <span class="link-text" *ngIf="!isCollapsed">Places</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a routerLink='users' class="nav-link">
+                <i class="fa fa-users"></i>
+                <span class="link-text" *ngIf="!isCollapsed">Users</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link">
+                <i class="fa fa-cogs"></i>
+                <span class="link-text" *ngIf="!isCollapsed">Services</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link">
+                <i class="fa fa-info-circle"></i>
+                <span class="link-text" *ngIf="!isCollapsed">About</span>
+            </a>
+        </li>
+
+    </ul>
+</div>

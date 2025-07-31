@@ -1,0 +1,17 @@
+<section class="container py-5">
+    <h2 class="text-center mb-5 fw-bold fs-2">Explore Event Categories</h2>
+
+    <div class="row g-4">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3  " *ngFor="let category of categories"
+            [routerLink]="[`/${category.route}`]" style="cursor: pointer;">
+            <div class="card h-100 shadow-sm border-0 m-auto">
+                <img [src]="category.imageUrl" class="card-img-top" [alt]="category.name"
+                    style="height: 180px; object-fit: cover;" />
+                <div class="card-body">
+                    <h5 class="card-title fw-semibold">{{ category.name }}</h5>
+                    <p class="card-text text-muted small">{{ category.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

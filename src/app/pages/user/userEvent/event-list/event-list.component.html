@@ -1,0 +1,46 @@
+<div class="container py-4">
+    <h2 class="mb-4 text-center">All Events</h2>
+
+    <!-- Filters -->
+    <div class="row mb-3">
+        <div class="col-md-4 mb-2">
+            <select class="form-select" [(ngModel)]="eventTypeFilter" (change)="onFilterChange()">
+                <option value="">All Event Types</option>
+                <option *ngFor="let t of eventTypes" [value]="t">{{ t }}</option>
+            </select>
+        </div>
+        <div class="col-md-4 mb-2">
+            <input type="text" class="form-control" [(ngModel)]="search" placeholder="Search by name..."
+                (keyup.enter)="onFilterChange()" />
+        </div>
+        <div class="col-md-4 mb-2">
+            <button class="btn btn-primary w-100" (click)="onFilterChange()">Apply Filter</button>
+        </div>
+    </div>
+
+    <div *ngIf="loading" class="text-center my-5">
+        <div class="spinner-border text-primary"></div>
+    </div>
+
+    <div *ngIf="!loading && events.length === 0" class="alert alert-info">
+        No events found.
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col" *ngFor="let event of events">
+            <div class="card h-100 shadow-sm border-0">
+                <img [src]="event.imageUrl ? baseUrl + event.imageUrl : 'assets/placeholder.jpg'" class="card-img-top"
+                    style="height: 170px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ event.name }}</h5>
+                    <p class="card-text mb-1"><b>Type:</b> {{ event.eventType }}</p>
+                    <p class="card-text mb-1"><b>Date:</b> {{ event.date | date:'medium' }}</p>
+                    <p class="card-text text-muted">{{ event.description | slice:0:70 }}{{ event.description?.length >
+                        70 ? '...' : '' }}</p>
+                    <button class="btn btn-outline-primary w-100 mt-2" (click)="goToEventDetails(event.id)">View
+                        Details</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

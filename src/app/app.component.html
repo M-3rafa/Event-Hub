@@ -1,3 +1,6 @@
-<app-navbar></app-navbar>
+<app-navbar *ngIf="isLoggedIn"></app-navbar>
+
+<!-- <app-space-background></app-space-background> -->
 <router-outlet></router-outlet>
+
 <app-footer></app-footer>

@@ -1,0 +1,66 @@
+<div class="container py-5">
+    <h2 class="mb-4 text-center">🏢 My Places</h2>
+    <div *ngIf="loading" class="text-center my-5">
+        <div class="spinner-border text-primary" role="status"></div>
+    </div>
+    <div *ngIf="!loading" class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col" *ngFor="let place of places">
+            <div class="card shadow-sm h-100 border-0">
+                <img [src]="getFullImageUrl(place.imageUrl)" alt="place-img" class="card-img-top"
+                    style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">{{ place.placeTypeName }}</h5>
+                    <p class="card-text text-muted">
+                        <strong>📍 Location:</strong> {{ place.location }} <br>
+                        <strong>👥 Max Attendees:</strong> {{ place.maxAttendees }} <br>
+                        <strong>💰 Price:</strong> {{ place.price }} EGP
+                    </p>
+                    <span class="badge rounded-pill" [ngClass]="{
+              'bg-success': place.isApproved,
+              'bg-warning text-dark': !place.isApproved
+            }">
+                        {{ place.isApproved ? 'Approved ✔️' : 'Pending ⏳' }}
+                    </span>
+                    <hr>
+                    <div *ngIf="place.stripePaymentLink">
+                        <a [href]="place.stripePaymentLink" target="_blank" class="badge bg-info">Stripe Link</a>
+                    </div>
+                    <hr>
+                    <div>
+                        <small><b>Documents:</b></small>
+                        <ul class="list-unstyled mb-2 ms-2">
+                            <li *ngIf="place.securityClearanceUrl">
+                                <a [href]="getFullImageUrl(place.securityClearanceUrl)" target="_blank">Security
+                                    Clearance</a>
+                            </li>
+                            <li *ngIf="place.ownershipOrRentalContractUrl">
+                                <a [href]="getFullImageUrl(place.ownershipOrRentalContractUrl)"
+                                    target="_blank">Ownership/Rental Contract</a>
+                            </li>
+                            <li *ngIf="place.nationalIdFrontUrl">
+                                <a [href]="getFullImageUrl(place.nationalIdFrontUrl)" target="_blank">National ID
+                                    (Front)</a>
+                            </li>
+                            <li *ngIf="place.nationalIdBackUrl">
+                                <a [href]="getFullImageUrl(place.nationalIdBackUrl)" target="_blank">National ID
+                                    (Back)</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline-primary btn-sm w-50" (click)="goToEditPlace(place.id)">
+                            Edit
+                        </button>
+                        <button class="btn btn-outline-danger btn-sm w-50" (click)="deletePlace(place.id)">
+                            Delete
+                        </button>
+                        <button class="btn btn-outline-info btn-sm w-100" (click)="goToAvailability(place.id)">
+                            Manage Availabilities
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

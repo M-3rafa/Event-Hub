@@ -1,0 +1,126 @@
+<div class="container py-4 admin-places-page">
+    <h2 class="mb-4 text-center">All Places (Approved & Pending)</h2>
+
+    <div class="row mb-3">
+        <div class="col-md-4 mx-auto">
+            <select [(ngModel)]="selectedType" (change)="filterPlaces()" class="form-select">
+                <option value="">All Types</option>
+                <option *ngFor="let type of placeTypes" [value]="type">{{ type }}</option>
+            </select>
+        </div>
+    </div>
+
+    <div *ngIf="filteredPlaces.length === 0" class="alert alert-info text-center">No places found.</div>
+
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="col" *ngFor="let place of filteredPlaces">
+            <div class="card shadow-sm h-100 border-0">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-2">
+                        <img *ngIf="place.imageUrl" [src]="place.imageUrl" alt="place"
+                            style="width:90px;height:90px;object-fit:cover;border-radius:10px;margin-right:16px;">
+                        <div>
+                            <h5 class="card-title mb-1">{{ place.placeTypeName }}</h5>
+                            <p class="mb-1"><b>Location:</b> {{ place.location }}</p>
+                            <p class="mb-1"><b>Max Attendees:</b> {{ place.maxAttendees }}</p>
+                            <p class="mb-1"><b>Price:</b> {{ place.price }} EGP</p>
+                            <div>
+                                <b>Lat:</b> {{ place.latitude }} <b>Lng:</b> {{ place.longitude }}
+                            </div>
+                            <span class="badge" [class.bg-success]="place.isApproved"
+                                [class.bg-warning]="!place.isApproved">
+                                {{ place.isApproved ? 'Approved' : 'Pending' }}
+                            </span>
+                            <button class="btn btn-link p-0 ms-2" (click)="toggleExpand(place.id)">
+                                {{ expandedPlaceId === place.id ? 'Hide Details' : 'Show Details' }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Expanded details for each place -->
+                    <div [hidden]="expandedPlaceId !== place.id">
+                        <hr>
+                        <div class="mb-2">
+                            <small class="text-muted">Documents:</small>
+                            <ul class="list-unstyled ms-3">
+                                <li *ngIf="place.securityClearanceUrl">
+                                    <a [href]="place.securityClearanceUrl" target="_blank">Security Clearance</a>
+                                </li>
+                                <li *ngIf="place.ownershipOrRentalContractUrl">
+                                    <a [href]="place.ownershipOrRentalContractUrl" target="_blank">Ownership/Rental
+                                        Contract</a>
+                                </li>
+                                <li *ngIf="place.nationalIdFrontUrl">
+                                    <a [href]="place.nationalIdFrontUrl" target="_blank">National ID (Front)</a>
+                                </li>
+                                <li *ngIf="place.nationalIdBackUrl">
+                                    <a [href]="place.nationalIdBackUrl" target="_blank">National ID (Back)</a>
+                                </li>
+                                <li *ngIf="place.stripePaymentLink">
+                                    <a [href]="place.stripePaymentLink" target="_blank">Stripe Payment Link</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="mb-3">
+                            <b>Admin Note:</b> <span class="text-danger">{{ place.adminNote }}</span>
+                        </div>
+                        <div class="mb-3">
+                            <b>Availability Calendar</b>
+                            <div *ngIf="calendars[place.id] && availabilities[place.id]">
+                                <table class="calendar">
+                                    <thead>
+                                        <tr>
+                                            <th *ngFor="let d of ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']">{{d}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let week of calendars[place.id]">
+                                            <td *ngFor="let d of week">
+                                                <span *ngIf="d"
+                                                    [ngClass]="{'bg-danger text-white': isBlocked(place.id, d), 'bg-light': !isBlocked(place.id, d)}"
+                                                    style="display:inline-block; width:2.1em; border-radius:4px; margin:1px; text-align:center;">
+                                                    {{ d.getDate() }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="mt-2"><span class="badge bg-danger">&nbsp;</span> Unavailable &nbsp; <span
+                                        class="badge bg-light border">&nbsp;</span> Available</div>
+                            </div>
+                            <div *ngIf="!calendars[place.id]" class="text-muted">Loading calendar...</div>
+                        </div>
+                        <div class="d-flex gap-2 mb-3">
+                            <button class="btn btn-success w-50" (click)="approvePlace(place.id)"
+                                [disabled]="place.isApproved">Approve</button>
+                            <button class="btn btn-danger w-50" (click)="openRejectModal(place.id)"
+                                [disabled]="place.isApproved">Reject</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reject Modal -->
+    <div *ngIf="rejectingPlaceId !== null" class="modal fade show d-block" tabindex="-1"
+        style="background: rgba(0,0,0,0.2);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger">Reject Place</h5>
+                    <button type="button" class="btn-close" (click)="closeRejectModal()"></button>
+                </div>
+                <div class="modal-body">
+                    <label><b>Rejection Reason:</b></label>
+                    <textarea [(ngModel)]="rejectionReason" class="form-control" rows="2"></textarea>
+                    <div *ngIf="rejectionError" class="text-danger mt-2">{{ rejectionError }}</div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" (click)="confirmRejectPlace()">Reject</button>
+                    <button class="btn btn-secondary" (click)="closeRejectModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

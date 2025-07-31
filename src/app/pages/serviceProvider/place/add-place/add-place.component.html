@@ -1,0 +1,65 @@
+<div class="container py-4" style="max-width: 700px;">
+    <h2 class="mb-4 text-center">Add New Place</h2>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label>Place Type*</label>
+            <select formControlName="placeTypeName" class="form-select" required>
+                <option value="">Select Place Type</option>
+                <option *ngFor="let t of placeTypes" [value]="t">{{ t }}</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label>Location Description*</label>
+            <input formControlName="location" class="form-control" placeholder="e.g., Cairo Tower" required />
+        </div>
+        <div class="mb-3">
+            <label>Pick Location on Map (drag marker):</label>
+            <div id="placeMap" style="height: 320px; width: 100%; border:1px solid #aaa; border-radius: 10px;"></div>
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <label>Latitude*</label>
+                <input formControlName="latitude" class="form-control" readonly />
+            </div>
+            <div class="col">
+                <label>Longitude*</label>
+                <input formControlName="longitude" class="form-control" readonly />
+            </div>
+        </div>
+        <div class="mb-3">
+            <label>Max Attendees*</label>
+            <input formControlName="maxAttendees" type="number" min="1" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label>Price (EGP)*</label>
+            <input formControlName="price" type="number" min="1" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label>Stripe Payment Link*</label>
+            <input formControlName="stripePaymentLink" class="form-control" placeholder="Stripe link" required />
+        </div>
+        <div class="mb-3">
+            <label>Place Image*</label>
+            <input type="file" (change)="onFileSelected($event, 'image')" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label>Security Clearance*</label>
+            <input type="file" (change)="onFileSelected($event, 'securityClearance')" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label>Ownership/Rental Contract*</label>
+            <input type="file" (change)="onFileSelected($event, 'ownershipOrRentalContract')" class="form-control"
+                required />
+        </div>
+        <div class="mb-3">
+            <label>National ID (Front)*</label>
+            <input type="file" (change)="onFileSelected($event, 'nationalIdFront')" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label>National ID (Back)*</label>
+            <input type="file" (change)="onFileSelected($event, 'nationalIdBack')" class="form-control" required />
+        </div>
+        <div *ngIf="errorMsg" class="alert alert-danger">{{ errorMsg }}</div>
+        <button [disabled]="submitting" type="submit" class="btn btn-success">Add Place</button>
+    </form>
+</div>

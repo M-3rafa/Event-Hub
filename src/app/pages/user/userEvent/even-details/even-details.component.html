@@ -1,0 +1,68 @@
+<div class="container py-4" *ngIf="!loading && event">
+    <h2 class="mb-3">{{ event.name }}</h2>
+    <img *ngIf="event.imageUrl" [src]="baseUrl + event.imageUrl" class="mb-3 rounded shadow"
+        style="max-width:380px; max-height:220px;">
+    <p class="lead mb-2">{{ event.description }}</p>
+    <div class="mb-2">
+        <span class="badge bg-primary">{{ event.eventType }}</span>
+        <span class="badge bg-info" *ngIf="event.date">{{ event.date | date:'fullDate' }}</span>
+    </div>
+
+    <div *ngIf="event.stadiumName">
+        <b>Stadium:</b> {{ event.stadiumName }}
+    </div>
+    <div *ngIf="event.teamA && event.teamB">
+        <b>Teams:</b> {{ event.teamA }} vs {{ event.teamB }}
+    </div>
+    <div *ngIf="event.performers">
+        <b>Performers:</b> {{ event.performers }}
+    </div>
+    <div *ngIf="event.placeName">
+        <b>Place:</b> {{ event.placeName }}
+    </div>
+    <div *ngIf="event.locationAddress">
+        <b>Address:</b> {{ event.locationAddress }}
+    </div>
+
+    <hr>
+
+    <div *ngIf="event.ticketTypes?.length > 0">
+        <h5>Book a Ticket</h5>
+        <form (ngSubmit)="addToCart()" class="row g-2 align-items-end">
+            <div class="col-md-5">
+                <label>Ticket Type</label>
+                <select class="form-select" [(ngModel)]="selectedTicketTypeId" name="ticketTypeId" required>
+                    <option *ngFor="let t of event.ticketTypes" [value]="t.id">
+                        {{ t.name }} - {{ t.price }} EGP (Available: {{ t.quantity }})
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label>Quantity</label>
+                <input type="number" class="form-control" min="1" [(ngModel)]="ticketQuantity"
+                    [max]="selectedTicketQuantity" placeholder="Qty" name="ticketQuantity">
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-success w-100">Add to Cart</button>
+            </div>
+        </form>
+        <div *ngIf="actionMsg" class="mt-2 alert" [ngClass]="{
+      'alert-success': actionMsg.toLowerCase().includes('added'),
+      'alert-danger': !actionMsg.toLowerCase().includes('added')
+    }">
+            {{ actionMsg }}
+        </div>
+    </div>
+
+    <div *ngIf="!event.ticketTypes || event.ticketTypes.length === 0" class="alert alert-info mt-4">
+        No tickets available for this event.
+    </div>
+</div>
+
+<div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border"></div>
+</div>
+
+<div *ngIf="!loading && errorMsg" class="alert alert-danger mt-4">
+    {{ errorMsg }}
+</div>

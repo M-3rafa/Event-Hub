@@ -1,33 +1,11 @@
-// Brand Colors
-$color-primary: #7847eb; // Vibrant purple
-$color-secondary: #f472b6; // Soft pink
-$color-accent: #38bdf8; // Sky blue
-$color-success: #22c55e; // Green
-$color-danger: #ef4444; // Red
-$color-warning: #facc15; // Yellow
-
-// Neutrals
-$color-white: #ffffff;
-$color-light: #f9fafb;
-$color-gray: #6b7280;
-$color-dark: #1f2937;
-$color-black: #000000;
-
-// Backgrounds
-$bg-page: $color-light;
-$bg-card: $color-white;
-
-// Text
-$text-heading: $color-dark;
-$text-body: $color-gray;
-$text-link: $color-primary;
-
-// Buttons
-$btn-primary-bg: $color-primary;
-$btn-primary-text: $color-white;
-$btn-hover-bg: darken($color-primary, 10%);
-
 /* Gradient button */
+@mixin shared-bg {
+  background: linear-gradient(45deg, #7847eb);
+}
+@mixin shared-active-bg {
+  background: linear-gradient(45deg, #4c2a90, #ac65ee, #4c2a90);
+}
+
 .btn-gradient {
   background: linear-gradient(45deg, #7847eb, #f472b6);
   color: white;
@@ -58,10 +36,11 @@ $btn-hover-bg: darken($color-primary, 10%);
 }
 
 .sidebar-header {
+  @include shared-bg;
+
   display: flex;
   align-items: center;
   padding: 15px;
-  background: #7847eb;
   justify-content: space-between;
 }
 
@@ -115,14 +94,14 @@ $btn-hover-bg: darken($color-primary, 10%);
 }
 
 .sidebar-nav li a:hover {
-  background: #38bdf8;
+  background: #a962b8;
   color: white;
 }
 
 .sidebar-nav li.active a {
   background-color: #4c2a90;
   color: white;
-  border-left: 4px solid #38bdf8;
+  border-left: 4px solid #712694;
 }
 
 .sidebar-nav li a.logout-link {
@@ -133,3 +112,25 @@ $btn-hover-bg: darken($color-primary, 10%);
   background: #b91c1c;
   color: white;
 }
+.active {
+  @include shared-active-bg;
+}
+
+//#2f1959
+//#160e33
+
+// #2f1056
+//#712694
+//#a962b8
+//#030014
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+//

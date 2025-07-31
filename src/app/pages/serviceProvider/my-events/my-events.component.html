@@ -1,0 +1,37 @@
+<div class="container py-5">
+    <h2 class="mb-4 text-center">📅 My Events</h2>
+    <div *ngIf="loading" class="text-center my-5">
+        <div class="spinner-border text-primary" role="status"></div>
+    </div>
+    <div *ngIf="!loading" class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col" *ngFor="let event of events">
+            <div class="card shadow-lg  border-1 " (click)="goToEventDetails(event.id)" style="cursor:pointer">
+                <img [src]="getFullImageUrl(event.imageUrl)" [alt]="event.name" class="card-img-top" />
+                <div class="card-body">
+                    <h5 class="card-title text-primary">{{ event.name }}</h5>
+                    <div class="  d-flex justify-content-between ">
+                        <div>
+                            <p class="card-text text-muted">
+                                <strong> Type:</strong> {{ event.eventType || 'N/A' }} <br>
+                                <strong> Date:</strong> {{ event.date | date: 'MMM d, y h:mm a' }}
+                            </p>
+                        </div>
+                        <div>
+                            <span class="p-2 badge rounded-pill" [ngClass]="{
+              'bg-success': event.isApproved,
+              'bg-warning text-dark': !event.isApproved
+            }">
+                                {{ event.isApproved ? 'Approved ✔️' : 'Pending ⏳' }}
+                            </span>
+                        </div>
+                    </div>
+                    <!-- Location Display -->
+                    <div *ngIf="event.locationAddress">
+                        <hr>
+                        <small><b class="fw-bold"> Location:</b> {{ event.locationAddress }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

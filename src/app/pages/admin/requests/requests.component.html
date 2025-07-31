@@ -1,0 +1,66 @@
+<div class="container py-4">
+    <h2 class="mb-4 text-center">Pending Provider Requests</h2>
+    <div *ngIf="loading" class="text-center">
+        <div class="spinner-border"></div>
+    </div>
+    <div *ngIf="requests.length === 0 && !loading" class="alert alert-info">No pending requests.</div>
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="col" *ngFor="let req of requests">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title mb-2">{{ req.userName }} <span class="badge bg-secondary">{{ req.email
+                            }}</span></h5>
+                    <div class="mb-2"><b>Requested at:</b> {{ req.requestedAt | date:'short' }}</div>
+                    <button class="btn btn-link p-0" (click)="view(req)">View Details</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal/Expanded view -->
+    <div *ngIf="selectedRequest" class="modal d-block" tabindex="-1" style="background: rgba(0,0,0,0.3)">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Provider Request Details</h5>
+                    <button type="button" class="btn-close" (click)="closeModal()"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-2"><b>User:</b> {{ selectedRequest.userName }} ({{ selectedRequest.email }})</div>
+                    <div class="row g-2">
+                        <div class="col-md-4">
+                            <b>National ID (Front):</b><br>
+                            <img [src]="getFullUrl(selectedRequest.nationalIdFrontUrl)" alt="" class="img-thumbnail"
+                                style="max-width: 160px;">
+                        </div>
+                        <div class="col-md-4">
+                            <b>National ID (Back):</b><br>
+                            <img [src]="getFullUrl(selectedRequest.nationalIdBackUrl)" alt="" class="img-thumbnail"
+                                style="max-width: 160px;">
+                        </div>
+                        <div class="col-md-4">
+                            <b>Holding ID:</b><br>
+                            <img [src]="getFullUrl(selectedRequest.holdingIdUrl)" alt="" class="img-thumbnail"
+                                style="max-width: 160px;">
+                        </div>
+                    </div>
+                    <div class="mt-2" *ngIf="selectedRequest.stripePaymentLink">
+                        <b>Stripe Payment Link:</b>
+                        <a [href]="selectedRequest.stripePaymentLink" target="_blank">{{
+                            selectedRequest.stripePaymentLink }}</a>
+                    </div>
+                    <div *ngIf="selectedRequest.adminNote" class="alert alert-warning mt-2"><b>Admin Note:</b> {{
+                        selectedRequest.adminNote }}</div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" (click)="approve(selectedRequest.id)">Approve</button>
+                    <button class="btn btn-outline-danger" (click)="reject(selectedRequest.id)">Reject</button>
+                    <input type="text" [(ngModel)]="rejectNote" placeholder="Rejection reason..."
+                        class="form-control ms-2" style="max-width:220px;">
+                    <button class="btn btn-secondary" (click)="closeModal()">Close</button>
+                    <div *ngIf="errorMsg" class="text-danger ms-3">{{ errorMsg }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

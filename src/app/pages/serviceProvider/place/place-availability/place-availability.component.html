@@ -1,0 +1,27 @@
+<div class="container mt-5">
+    <h2>Manage Place Availability</h2>
+    <p>
+        <strong>Instructions:</strong><br>
+        - Click any date to block it (unavailable for booking).<br>
+        - Click a blocked date again to make it available.<br>
+        - Blocked dates are listed below.
+    </p>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Block or Unblock a Date</mat-label>
+        <input matInput [matDatepicker]="picker" (dateChange)="onDateSelect($event.value)" placeholder="Choose a date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <div class="mt-3">
+        <h5>Blocked Dates:</h5>
+        <ul>
+            <li *ngFor="let d of blockedDates">
+                <span class="text-danger">{{ d | date: 'fullDate' }}</span>
+                <button mat-button color="warn" (click)="unblockDate(d)">Unblock</button>
+            </li>
+            <li *ngIf="blockedDates.length === 0"><i>No blocked dates yet.</i></li>
+        </ul>
+    </div>
+</div>
