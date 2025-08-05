@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
         this.tokenService.saveToken(res.token);
         this.tokenService.saveUser(res.userName, res.email, res.roles);
         this.successMessage = 'Login successful!';
-        this.router.navigate(['/home']);
+        this.router.navigate(['home']);
       },
       error: (err) => {
         this.errorMessage = err.error.message;
