@@ -1,164 +1,252 @@
-<div class="container py-5" style="max-width: 750px;">
-    <h2 class="mb-4 text-center">Add New Event</h2>
+<div class="container py-4" style="max-width: 800px;">
+    <!-- Header with progress indicator -->
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">Create New Event</h2>
+        <div class="d-flex justify-content-center mt-3">
+            <div class="progress-steps">
+                <div class="step active">1. Basic Info</div>
+                <div class="step">2. Details</div>
+                <div class="step">3. Documents</div>
+                <div class="step">4. Tickets</div>
+            </div>
+        </div>
+    </div>
 
     <form [formGroup]="addForm" (ngSubmit)="submit()" enctype="multipart/form-data" novalidate>
-
-        <!-- 📌 Basic Info -->
-        <fieldset class="border rounded p-3 mb-4">
-            <legend class="w-auto px-2">Basic Information</legend>
-
-            <div class="mb-3">
-                <label class="form-label">Name*</label>
-                <input formControlName="name" class="form-control" placeholder="Event Name" required />
+        <!-- 📌 Basic Information Section -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Basic Information
+                </h5>
             </div>
-
-            <div class="mb-3">
-                <label class="form-label">Event Type*</label>
-                <select formControlName="eventType" class="form-select" required>
-                    <option value="">Select Event Type</option>
-                    <option *ngFor="let t of eventTypes" [value]="t">{{ t }}</option>
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Date*</label>
-                <input formControlName="date" type="date" class="form-control" required />
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Description</label>
-                <textarea formControlName="description" rows="3" class="form-control"
-                    placeholder="Optional description..."></textarea>
-            </div>
-        </fieldset>
-
-        <!-- 📌 Conditional Fields -->
-        <fieldset class="border rounded p-3 mb-4" *ngIf="eventType === 'Match'">
-            <legend class="w-auto px-2">Match Details</legend>
-
-            <div class="mb-3">
-                <label class="form-label">Stadium Name*</label>
-                <input formControlName="stadiumName" class="form-control" />
-            </div>
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label class="form-label">Team A*</label>
-                    <input formControlName="teamA" class="form-control" />
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Event Name <span class="text-danger">*</span></label>
+                    <input formControlName="name" class="form-control form-control-lg"
+                        placeholder="e.g., Summer Music Festival" required />
+                    <div *ngIf="addForm.get('name')?.invalid && (addForm.get('name')?.dirty || addForm.get('name')?.touched)"
+                        class="text-danger small mt-1">
+                        Event name is required
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <label class="form-label">Team B*</label>
-                    <input formControlName="teamB" class="form-control" />
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Event Type <span class="text-danger">*</span></label>
+                        <select formControlName="eventType" class="form-select" required>
+                            <option value="">Select Event Type</option>
+                            <option *ngFor="let t of eventTypes" [value]="t">{{ t }}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Date <span class="text-danger">*</span></label>
+                        <input formControlName="date" type="datetime-local" class="form-control" required />
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <label class="form-label fw-bold">Description</label>
+                    <textarea formControlName="description" rows="3" class="form-control"
+                        placeholder="Tell attendees what to expect..."></textarea>
                 </div>
             </div>
-        </fieldset>
-
-        <fieldset class="border rounded p-3 mb-4" *ngIf="eventType === 'Concert'">
-            <legend class="w-auto px-2">Concert Details</legend>
-            <div class="mb-3">
-                <label class="form-label">Performers* <small class="text-muted">(comma-separated)</small></label>
-                <input formControlName="performers" class="form-control" />
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Place Name*</label>
-                <input formControlName="placeName" class="form-control" />
-            </div>
-        </fieldset>
-
-        <div *ngIf="eventType === 'Other'" class="mb-4">
-            <label class="form-label">Place Name*</label>
-            <input formControlName="placeName" class="form-control" />
         </div>
 
-        <!-- 💳 Payment -->
-        <div class="mb-4">
-            <label class="form-label">Stripe Payment Link</label>
-            <input formControlName="stripePaymentLink" class="form-control" placeholder="Optional" />
+        <!-- 📌 Conditional Event Details Sections -->
+        <div *ngIf="eventType" class="card shadow-sm mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="bi bi-card-checklist me-2"></i>
+                    Event Details
+                </h5>
+            </div>
+            <div class="card-body">
+                <!-- Match Details -->
+                <div *ngIf="eventType === 'Match'" class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label fw-bold">Stadium Name <span class="text-danger">*</span></label>
+                        <input formControlName="stadiumName" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Team A <span class="text-danger">*</span></label>
+                        <input formControlName="teamA" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Team B <span class="text-danger">*</span></label>
+                        <input formControlName="teamB" class="form-control" />
+                    </div>
+                </div>
+
+                <!-- Concert Details -->
+                <div *ngIf="eventType === 'Concert'" class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label fw-bold">Performers <span class="text-danger">*</span></label>
+                        <input formControlName="performers" class="form-control"
+                            placeholder="Comma separated list of performers" />
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold">Venue Name <span class="text-danger">*</span></label>
+                        <input formControlName="placeName" class="form-control" />
+                    </div>
+                </div>
+
+                <!-- Other Event Details -->
+                <div *ngIf="eventType === 'Other'">
+                    <label class="form-label fw-bold">Venue Name <span class="text-danger">*</span></label>
+                    <input formControlName="placeName" class="form-control" />
+                </div>
+            </div>
         </div>
 
-        <!-- 🗺️ Location -->
-        <fieldset class="border rounded p-3 mb-4">
-            <legend class="w-auto px-2">Location</legend>
-
-            <div class="mb-3">
-                <label class="form-label">Location Address</label>
-                <input formControlName="locationAddress" class="form-control"
-                    placeholder="e.g., Cairo Stadium, Egypt" />
+        <!-- 💳 Payment Information -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="bi bi-credit-card me-2"></i>
+                    Payment Information
+                </h5>
             </div>
-
-            <div class="mb-3">
-                <label class="form-label">Pick Location on Map:</label>
-                <div id="eventMap" style="height: 320px; width: 100%; border: 1px solid #ccc; border-radius: 8px;">
+            <div class="card-body">
+                <label class="form-label fw-bold">Stripe Payment Link</label>
+                <div class="input-group">
+                    <span class="input-group-text">https://</span>
+                    <input formControlName="stripePaymentLink" class="form-control"
+                        placeholder="pay.stripe.com/your-link" />
                 </div>
+                <small class="text-muted">Leave blank if payment will be handled elsewhere</small>
             </div>
+        </div>
 
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label class="form-label">Latitude</label>
-                    <input formControlName="latitude" class="form-control" readonly />
+        <!-- 🗺️ Location Section -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="bi bi-geo-alt me-2"></i>
+                    Location
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Address</label>
+                    <input formControlName="locationAddress" class="form-control"
+                        placeholder="Enter address or venue name" />
                 </div>
-                <div class="col-md-6">
-                    <label class="form-label">Longitude</label>
-                    <input formControlName="longitude" class="form-control" readonly />
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Select on Map <small class="text-muted">(Click to place
+                            marker)</small></label>
+                    <div id="eventMap" class="rounded border" style="height: 300px;"></div>
                 </div>
-            </div>
-        </fieldset>
 
-        <!-- 📄 Documents -->
-        <fieldset class="border rounded p-3 mb-4">
-            <legend class="w-auto px-2">Upload Documents</legend>
-
-            <div class="mb-3" *ngFor="let doc of [
-        { name: 'Image', label: 'Event Poster Image*' },
-        { name: 'SecurityClearance', label: 'Security Clearance*' },
-        { name: 'PublicLicenseFront', label: 'Public License (Front)*' },
-        { name: 'PublicLicenseBack', label: 'Public License (Back)*' },
-        { name: 'CivilProtectionApprovalFront', label: 'Civil Protection Approval (Front)*' },
-        { name: 'CivilProtectionApprovalBack', label: 'Civil Protection Approval (Back)*' },
-        { name: 'EventInsurance', label: 'Event Insurance (optional)' }
-        ]">
-                <label class="form-label">{{ doc.label }}</label>
-                <input type="file" class="form-control" (change)="onFileSelected($event, doc.name)"
-                    [attr.required]="doc.name !== 'EventInsurance' ? true : null" />
-            </div>
-        </fieldset>
-
-        <!-- 🎫 Ticket Types -->
-        <fieldset class="border rounded p-3 mb-4" formArrayName="ticketTypes">
-            <legend class="w-auto px-2">Ticket Types</legend>
-
-            <div *ngFor="let t of ticketTypesFormArray.controls; let i = index" [formGroupName]="i"
-                class="border rounded p-2 mb-3 bg-light">
-                <div class="row g-2 align-items-end">
-                    <div class="col-md-4">
-                        <label class="form-label">Name*</label>
-                        <input formControlName="name" class="form-control" />
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Latitude</label>
+                        <input formControlName="latitude" class="form-control" readonly />
                     </div>
-                    <div class="col-md-3">
-                        <label class="form-label">Price*</label>
-                        <input type="number" formControlName="price" class="form-control" min="1" />
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label">Quantity*</label>
-                        <input type="number" formControlName="quantity" class="form-control" min="1" />
-                    </div>
-                    <div class="col-md-2 text-end">
-                        <button type="button" class="btn btn-danger btn-sm mt-2"
-                            (click)="removeTicketType(i)">Remove</button>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Longitude</label>
+                        <input formControlName="longitude" class="form-control" readonly />
                     </div>
                 </div>
             </div>
+        </div>
 
-            <button type="button" class="btn btn-outline-primary btn-sm" (click)="addTicketType()">Add Ticket
-                Type</button>
-        </fieldset>
+        <!-- 📄 Documents Section -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="bi bi-files me-2"></i>
+                    Required Documents
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6" *ngFor="let doc of [
+                        { name: 'Image', label: 'Event Poster Image', required: true, icon: 'bi-image' },
+                        { name: 'SecurityClearance', label: 'Security Clearance', required: true, icon: 'bi-shield-lock' },
+                        { name: 'PublicLicenseFront', label: 'Public License (Front)', required: true, icon: 'bi-file-text' },
+                        { name: 'PublicLicenseBack', label: 'Public License (Back)', required: true, icon: 'bi-file-text' },
+                        { name: 'CivilProtectionApprovalFront', label: 'Civil Protection (Front)', required: true, icon: 'bi-file-earmark-medical' },
+                        { name: 'CivilProtectionApprovalBack', label: 'Civil Protection (Back)', required: true, icon: 'bi-file-earmark-medical' },
+                        { name: 'EventInsurance', label: 'Event Insurance', required: false, icon: 'bi-file-earmark-break' }
+                    ]">
+                        <div class="document-upload">
+                            <label class="form-label">
+                                <i class="bi {{doc.icon}} me-1"></i>
+                                {{doc.label}}
+                                <span *ngIf="doc.required" class="text-danger">*</span>
+                            </label>
+                            <input type="file" class="form-control" (change)="onFileSelected($event, doc.name)"
+                                [required]="doc.required" />
+                            <small *ngIf="doc.required" class="text-muted">Required</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <!-- ⚠️ Error & Submit -->
-        <div *ngIf="errorMsg" class="alert alert-danger">{{ errorMsg }}</div>
+        <!-- 🎫 Ticket Types Section -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="bi bi-ticket-perforated me-2"></i>
+                    Ticket Types
+                </h5>
+            </div>
+            <div class="card-body">
+                <div formArrayName="ticketTypes">
+                    <div *ngFor="let t of ticketTypesFormArray.controls; let i = index" [formGroupName]="i"
+                        class="ticket-type-card mb-3 p-3 border rounded">
+                        <div class="row g-3 align-items-end">
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold">Ticket Name <span class="text-danger">*</span></label>
+                                <input formControlName="name" class="form-control" placeholder="VIP, General, etc." />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold">Price <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" formControlName="price" class="form-control" min="1"
+                                        step="0.01" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold">Quantity <span class="text-danger">*</span></label>
+                                <input type="number" formControlName="quantity" class="form-control" min="1" />
+                            </div>
+                            <div class="col-md-2 text-end">
+                                <button type="button" class="btn btn-outline-danger" (click)="removeTicketType(i)">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        <div class="d-grid">
-            <button [disabled]="submitting" type="submit" class="btn btn-success">
-                {{ submitting ? 'Submitting...' : 'Add Event' }}
+                <button type="button" class="btn btn-outline-primary mt-2" (click)="addTicketType()">
+                    <i class="bi bi-plus-circle me-1"></i> Add Ticket Type
+                </button>
+            </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="d-flex justify-content-between mt-4">
+            <button type="button" class="btn btn-outline-secondary" routerLink="/events">
+                <i class="bi bi-arrow-left me-1"></i> Cancel
             </button>
+            <button type="submit" class="btn btn-primary px-4" [disabled]="submitting || addForm.invalid">
+                <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1" role="status"
+                    aria-hidden="true"></span>
+                {{ submitting ? 'Creating Event...' : 'Create Event' }}
+            </button>
+        </div>
+
+        <!-- Error Message -->
+        <div *ngIf="errorMsg" class="alert alert-danger mt-3">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            {{ errorMsg }}
         </div>
     </form>
 </div>

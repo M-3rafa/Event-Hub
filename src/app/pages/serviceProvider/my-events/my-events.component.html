@@ -1,34 +1,66 @@
 <div class="container py-5">
-    <h2 class="mb-4 text-center">📅 My Events</h2>
+    <h2 class="mb-4 text-center"> My Events</h2>
+
+    <!-- Loading State -->
     <div *ngIf="loading" class="text-center my-5">
-        <div class="spinner-border text-primary" role="status"></div>
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3 text-muted">Loading your events...</p>
     </div>
-    <div *ngIf="!loading" class="row row-cols-1 row-cols-md-3 g-4">
+
+    <!-- Empty State -->
+    <div *ngIf="!loading && events.length === 0" class="text-center py-5">
+        <div class="py-5">
+            <i class="bi bi-calendar-x text-muted" style="font-size: 3rem;"></i>
+            <h4 class="mt-3">No events found</h4>
+            <p class="text-muted">You haven't created any events yet</p>
+            <button class="btn btn-primary mt-2">Create Your First Event</button>
+        </div>
+    </div>
+
+    <!-- Events Grid -->
+    <div *ngIf="!loading && events.length > 0" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         <div class="col" *ngFor="let event of events">
-            <div class="card shadow-lg  border-1 " (click)="goToEventDetails(event.id)" style="cursor:pointer">
-                <img [src]="getFullImageUrl(event.imageUrl)" [alt]="event.name" class="card-img-top" />
-                <div class="card-body">
-                    <h5 class="card-title text-primary">{{ event.name }}</h5>
-                    <div class="  d-flex justify-content-between ">
-                        <div>
-                            <p class="card-text text-muted">
-                                <strong> Type:</strong> {{ event.eventType || 'N/A' }} <br>
-                                <strong> Date:</strong> {{ event.date | date: 'MMM d, y h:mm a' }}
-                            </p>
-                        </div>
-                        <div>
-                            <span class="p-2 badge rounded-pill" [ngClass]="{
-              'bg-success': event.isApproved,
-              'bg-warning text-dark': !event.isApproved
-            }">
-                                {{ event.isApproved ? 'Approved ✔️' : 'Pending ⏳' }}
-                            </span>
-                        </div>
+            <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden event-card"
+                (click)="goToEventDetails(event.id)">
+                <!-- Event Image -->
+                <div class="card-img-top event-image-container">
+                    <img [src]="getFullImageUrl(event.imageUrl)" [alt]="event.name" class="event-image"
+                        onerror="this.src='assets/images/event-placeholder.jpg'">
+                    <div class="event-date-badge">
+                        <span class="badge bg-dark rounded-pill px-3 py-2">
+                            {{ event.date | date: 'MMM d' }}
+                        </span>
                     </div>
-                    <!-- Location Display -->
-                    <div *ngIf="event.locationAddress">
-                        <hr>
-                        <small><b class="fw-bold"> Location:</b> {{ event.locationAddress }}</small>
+                </div>
+
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title mb-0 text-truncate">{{ event.name }}</h5>
+                        <span class="badge rounded-pill ms-2" [ngClass]="{
+                                'bg-success-light text-success': event.isApproved,
+                                'bg-warning-light text-warning': !event.isApproved
+                              }">
+                            {{ event.isApproved ? 'Approved' : 'Pending' }}
+                        </span>
+                    </div>
+
+                    <p class="card-text text-muted small mb-2">
+                        <i class="bi bi-tag-fill me-1"></i>
+                        {{ event.eventType || 'General' }}
+                    </p>
+
+                    <p class="card-text small mb-3">
+                        <i class="bi bi-clock-fill text-muted me-1"></i>
+                        {{ event.date | date: 'h:mm a' }}
+                    </p>
+
+                    <!-- Location -->
+                    <div *ngIf="event.locationAddress" class="d-flex align-items-start mt-3 pt-2 border-top">
+                        <i class="bi bi-geo-alt-fill text-danger me-2 mt-1"></i>
+                        <small class="text-muted">{{ event.locationAddress }}</small>
                     </div>
                 </div>
             </div>

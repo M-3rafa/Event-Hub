@@ -1,75 +1,153 @@
-.eye {
-  top: 50%;
-  right: 15px;
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: #6c757d;
-  font-size: 1rem;
+.login-wrapper {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  padding: 5%;
+  background: linear-gradient(45deg, #4c2a90, #ac65ee, #4c2a90);
 }
-.login-container {
-  background: linear-gradient(135deg, #7847eb, #38bdf8);
 
-  min-height: 100vh;
+/* Right login form */
+.login-container {
+  flex: 2;
+  background-color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 40px;
 }
 
 .login-card {
-  background-color: #ffffffb2;
-  padding: 3rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-  border-radius: 1rem;
   width: 100%;
-  max-width: 500px;
-  border: none;
+  max-width: 400px;
 }
 
 .login-title {
   color: #7847eb;
-  font-size: 1.75rem;
-  font-weight: bold;
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 30px;
   text-align: center;
-  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+  color: #555;
+}
+
+.form-control {
+  padding: 12px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.password-wrapper {
+  position: relative;
 }
 
 .toggle-eye {
   position: absolute;
+  right: 12px;
   top: 50%;
-  right: 15px;
   transform: translateY(-50%);
   cursor: pointer;
-  color: #7847eb;
+  color: #999;
 }
 
 .login-button {
-  background-color: #7847eb;
+  background: linear-gradient(to right, #7847eb, #f472b6);
+  border: none;
+  padding: 14px;
+  border-radius: 6px;
   color: white;
   font-weight: 600;
-  font-size: 1rem;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 0.375rem;
-  transition: background-color 0.3s ease-in-out;
+  font-size: 16px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 .login-button:disabled {
-  opacity: 0.6;
+  background: #ccc;
   cursor: not-allowed;
 }
 
-.login-button:hover:not(:disabled) {
-  background-color: #6935da;
+.login-button:hover:enabled {
+  opacity: 0.9;
 }
 
-.forgot-link {
-  color: #f472b6;
-  text-decoration: none;
-  font-size: 0.9rem;
-}
-
+.forgot-link,
 .signup-link {
   color: #7847eb;
+  font-weight: 500;
   text-decoration: none;
-  font-size: 0.9rem;
+}
+
+.signup-link strong {
+  color: #f472b6;
+}
+
+@media (max-width: 768px) {
+  .login-wrapper {
+    flex-direction: column;
+  }
+
+  .login-image {
+    height: 200px;
+  }
+}
+/* Right side */
+.right {
+  flex: 3;
+  background: linear-gradient(to bottom right, #7847eb, #f472b6);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 60px 40px;
+  position: relative;
+}
+
+.services {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.service-card {
+  background: white;
+  color: #333;
+  padding: 16px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.service-card i {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #7847eb;
+}
+
+.illustration {
+  width: 160px;
+  align-self: center;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .wrapper {
+    flex-direction: column;
+  }
+
+  .right {
+    order: -1;
+  }
+
+  .services {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

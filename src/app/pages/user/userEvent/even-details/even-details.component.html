@@ -1,68 +1,142 @@
-<div class="container py-4" *ngIf="!loading && event">
-    <h2 class="mb-3">{{ event.name }}</h2>
-    <img *ngIf="event.imageUrl" [src]="baseUrl + event.imageUrl" class="mb-3 rounded shadow"
-        style="max-width:380px; max-height:220px;">
-    <p class="lead mb-2">{{ event.description }}</p>
-    <div class="mb-2">
-        <span class="badge bg-primary">{{ event.eventType }}</span>
-        <span class="badge bg-info" *ngIf="event.date">{{ event.date | date:'fullDate' }}</span>
-    </div>
-
-    <div *ngIf="event.stadiumName">
-        <b>Stadium:</b> {{ event.stadiumName }}
-    </div>
-    <div *ngIf="event.teamA && event.teamB">
-        <b>Teams:</b> {{ event.teamA }} vs {{ event.teamB }}
-    </div>
-    <div *ngIf="event.performers">
-        <b>Performers:</b> {{ event.performers }}
-    </div>
-    <div *ngIf="event.placeName">
-        <b>Place:</b> {{ event.placeName }}
-    </div>
-    <div *ngIf="event.locationAddress">
-        <b>Address:</b> {{ event.locationAddress }}
-    </div>
-
-    <hr>
-
-    <div *ngIf="event.ticketTypes?.length > 0">
-        <h5>Book a Ticket</h5>
-        <form (ngSubmit)="addToCart()" class="row g-2 align-items-end">
-            <div class="col-md-5">
-                <label>Ticket Type</label>
-                <select class="form-select" [(ngModel)]="selectedTicketTypeId" name="ticketTypeId" required>
-                    <option *ngFor="let t of event.ticketTypes" [value]="t.id">
-                        {{ t.name }} - {{ t.price }} EGP (Available: {{ t.quantity }})
-                    </option>
-                </select>
+<div class="container py-3 py-md-4" *ngIf="!loading && event">
+    <!-- Main Event Row -->
+    <div class="row g-3">
+        <!-- Event Image Column - Full width on mobile, 5 cols on desktop -->
+        <div class="col-12 col-md-5 mb-3 mb-md-0">
+            <div class="card shadow-sm h-100">
+                <img *ngIf="event.imageUrl" [src]="baseUrl + event.imageUrl" class="card-img-top img-fluid rounded"
+                    style="object-fit: cover; min-height: 200px; max-height: 300px;" alt="{{ event.name }}">
+                <div class="card-body p-3 p-md-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2 mb-md-3 flex-wrap">
+                        <span class="badge bg-primary mb-1">{{ event.eventType }}</span>
+                        <span class="badge bg-warning text-dark mb-1" *ngIf="event.date">
+                            <i class="fas fa-calendar-alt me-1"></i>{{ event.date | date:'mediumDate' }}
+                        </span>
+                    </div>
+                    <h2 class="card-title h4 h-md-3">{{ event.name }}</h2>
+                </div>
             </div>
-            <div class="col-md-3">
-                <label>Quantity</label>
-                <input type="number" class="form-control" min="1" [(ngModel)]="ticketQuantity"
-                    [max]="selectedTicketQuantity" placeholder="Qty" name="ticketQuantity">
+        </div>
+
+        <!-- Event Details Column - Full width on mobile, 7 cols on desktop -->
+        <div class="col-12 col-md-7">
+            <div class="card shadow-sm h-100">
+                <div class="card-body p-3 p-md-4">
+                    <h4 class="card-subtitle mb-2 mb-md-3 text-muted h5">Event Details</h4>
+                    <p class="card-text lead small">{{ event.description }}</p>
+
+                    <div class="event-details mt-3 mt-md-4">
+                        <div class="detail-item mb-2 mb-md-3" *ngIf="event.stadiumName">
+                            <i class="fas fa-building me-2"></i>
+                            <strong>Venue:</strong> {{ event.stadiumName }}
+                        </div>
+
+                        <div class="detail-item mb-2 mb-md-3" *ngIf="event.teamA && event.teamB">
+                            <i class="fas fa-users me-2"></i>
+                            <div class="d-flex flex-wrap align-items-center">
+                                <strong class="me-2">Teams:</strong>
+                                <span class="team-badge bg-danger text-white px-2 py-1 rounded mb-1 me-2">{{ event.teamA
+                                    }}</span>
+                                <span class="me-2 mb-1">vs</span>
+                                <span class="team-badge bg-primary text-white px-2 py-1 rounded mb-1">{{ event.teamB
+                                    }}</span>
+                            </div>
+                        </div>
+
+                        <div class="detail-item mb-2 mb-md-3" *ngIf="event.performers">
+                            <i class="fas fa-microphone-alt me-2"></i>
+                            <strong>Performers:</strong> {{ event.performers }}
+                        </div>
+
+                        <div class="detail-item mb-2 mb-md-3" *ngIf="event.placeName">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            <strong>Location:</strong> {{ event.placeName }}
+                        </div>
+
+                        <div class="detail-item mb-2 mb-md-3" *ngIf="event.locationAddress">
+                            <i class="fas fa-map-pin me-2"></i>
+                            <strong>Address:</strong> {{ event.locationAddress }}
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-3">
-                <button type="submit" class="btn btn-success w-100">Add to Cart</button>
-            </div>
-        </form>
-        <div *ngIf="actionMsg" class="mt-2 alert" [ngClass]="{
-      'alert-success': actionMsg.toLowerCase().includes('added'),
-      'alert-danger': !actionMsg.toLowerCase().includes('added')
-    }">
-            {{ actionMsg }}
         </div>
     </div>
 
-    <div *ngIf="!event.ticketTypes || event.ticketTypes.length === 0" class="alert alert-info mt-4">
-        No tickets available for this event.
+    <!-- Ticket Booking Section -->
+    <div class="row mt-3 mt-md-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-book text-white py-2 py-md-3">
+                    <h5 class="mb-0 h6 h-md-5"><i class="fas fa-ticket-alt me-2"></i>Book Tickets</h5>
+                </div>
+
+                <div class="card-body p-3 p-md-4" *ngIf="event.ticketTypes?.length > 0">
+                    <form (ngSubmit)="addToCart()" class="row g-2 g-md-3 align-items-end">
+                        <div class="col-12 col-md-5">
+                            <label class="form-label small">Ticket Type</label>
+                            <select class="form-select form-select-sm" [(ngModel)]="selectedTicketTypeId"
+                                name="ticketTypeId" required>
+                                <option *ngFor="let t of event.ticketTypes" [value]="t.id">
+                                    {{ t.name }} - {{ t.price | currency:'EGP':'symbol':'1.2-2' }} (Available: {{
+                                    t.quantity }})
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <label class="form-label small">Quantity</label>
+                            <input type="number" class="form-control form-control-sm" min="1"
+                                [(ngModel)]="ticketQuantity" [max]="selectedTicketQuantity" placeholder="Qty"
+                                name="ticketQuantity">
+                        </div>
+                        <div class="col-6 col-md-4 d-flex align-items-end">
+                            <button type="submit" class="btn btn-color w-100 btn-sm">
+                                <i class="fas fa-cart-plus me-1 me-md-2"></i>Add to Cart
+                            </button>
+                        </div>
+                    </form>
+
+                    <div *ngIf="actionMsg" class="mt-2 mt-md-3 alert py-2" [ngClass]="{
+                        'alert-success': actionMsg.toLowerCase().includes('added'),
+                        'alert-danger': !actionMsg.toLowerCase().includes('added')
+                    }">
+                        <i class="fas me-2" [ngClass]="{
+                            'fa-check-circle': actionMsg.toLowerCase().includes('added'),
+                            'fa-exclamation-triangle': !actionMsg.toLowerCase().includes('added')
+                        }"></i>
+                        <span class="small">{{ actionMsg }}</span>
+                    </div>
+                </div>
+
+                <div *ngIf="!event.ticketTypes || event.ticketTypes.length === 0" class="card-body text-center py-3">
+                    <div class="alert alert-info py-2 mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <span class="small">No tickets available for this event.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
+<!-- Loading State -->
 <div *ngIf="loading" class="text-center py-5">
-    <div class="spinner-border"></div>
+    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-3 small">Loading event details...</p>
 </div>
 
-<div *ngIf="!loading && errorMsg" class="alert alert-danger mt-4">
-    {{ errorMsg }}
+<!-- Error State -->
+<div *ngIf="!loading && errorMsg" class="container py-4">
+    <div class="alert alert-danger d-flex align-items-center py-3" role="alert">
+        <i class="fas fa-exclamation-circle me-2 me-md-3"></i>
+        <div>
+            <h4 class="alert-heading h6 h-md-5">Error Loading Event</h4>
+            <p class="mb-0 small">{{ errorMsg }}</p>
+        </div>
+    </div>
+    <button class="btn btn-outline-primary btn-sm" routerLink="/events">
+        <i class="fas fa-arrow-left me-1"></i> Back to Events
+    </button>
 </div>

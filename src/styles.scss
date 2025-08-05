@@ -5,6 +5,18 @@
 @mixin shared-active-bg {
   background: linear-gradient(45deg, #4c2a90, #ac65ee, #4c2a90);
 }
+.bg-book {
+  @include shared-active-bg;
+}
+
+.btn-color {
+  background: linear-gradient(45deg, #7847eb, #f472b6);
+  color: white;
+}
+.btn-color:hover {
+  background: linear-gradient(45deg, #38bdf8, #7847eb);
+  color: white;
+}
 
 .btn-gradient {
   background: linear-gradient(45deg, #7847eb, #f472b6);
