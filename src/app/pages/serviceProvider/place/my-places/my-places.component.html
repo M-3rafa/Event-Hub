@@ -1,63 +1,113 @@
 <div class="container py-5">
-    <h2 class="mb-4 text-center">🏢 My Places</h2>
-    <div *ngIf="loading" class="text-center my-5">
-        <div class="spinner-border text-primary" role="status"></div>
-    </div>
-    <div *ngIf="!loading" class="row row-cols-1 row-cols-md-3 g-4">
-        <div class="col" *ngFor="let place of places">
-            <div class="card shadow-sm h-100 border-0">
-                <img [src]="getFullImageUrl(place.imageUrl)" alt="place-img" class="card-img-top"
-                    style="height: 200px; object-fit: cover;">
-                <div class="card-body">
-                    <h5 class="card-title text-primary">{{ place.placeTypeName }}</h5>
-                    <p class="card-text text-muted">
-                        <strong>📍 Location:</strong> {{ place.location }} <br>
-                        <strong>👥 Max Attendees:</strong> {{ place.maxAttendees }} <br>
-                        <strong>💰 Price:</strong> {{ place.price }} EGP
-                    </p>
-                    <span class="badge rounded-pill" [ngClass]="{
-              'bg-success': place.isApproved,
-              'bg-warning text-dark': !place.isApproved
-            }">
-                        {{ place.isApproved ? 'Approved ✔️' : 'Pending ⏳' }}
-                    </span>
-                    <hr>
-                    <div *ngIf="place.stripePaymentLink">
-                        <a [href]="place.stripePaymentLink" target="_blank" class="badge bg-info">Stripe Link</a>
-                    </div>
-                    <hr>
-                    <div>
-                        <small><b>Documents:</b></small>
-                        <ul class="list-unstyled mb-2 ms-2">
-                            <li *ngIf="place.securityClearanceUrl">
-                                <a [href]="getFullImageUrl(place.securityClearanceUrl)" target="_blank">Security
-                                    Clearance</a>
-                            </li>
-                            <li *ngIf="place.ownershipOrRentalContractUrl">
-                                <a [href]="getFullImageUrl(place.ownershipOrRentalContractUrl)"
-                                    target="_blank">Ownership/Rental Contract</a>
-                            </li>
-                            <li *ngIf="place.nationalIdFrontUrl">
-                                <a [href]="getFullImageUrl(place.nationalIdFrontUrl)" target="_blank">National ID
-                                    (Front)</a>
-                            </li>
-                            <li *ngIf="place.nationalIdBackUrl">
-                                <a [href]="getFullImageUrl(place.nationalIdBackUrl)" target="_blank">National ID
-                                    (Back)</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="d-flex gap-2">
-                        <button class="btn btn-outline-primary btn-sm w-50" (click)="goToEditPlace(place.id)">
-                            Edit
-                        </button>
-                        <button class="btn btn-outline-danger btn-sm w-50" (click)="deletePlace(place.id)">
-                            Delete
-                        </button>
-                        <button class="btn btn-outline-info btn-sm w-100" (click)="goToAvailability(place.id)">
-                            Manage Availabilities
-                        </button>
+    <h2 class="mb-4 text-center y fw-bold"><i class="fas fa-building me-2"></i> My Places</h2>
 
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" class="text-center my-5 py-5">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <p class="mt-3 text-muted">Loading your places...</p>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!loading && places.length === 0" class="text-center my-5 py-5 bg-light rounded-3">
+        <i class="fas fa-building fa-3x text-muted"></i>
+        <h4 class="mt-3 text-muted">No Places Added Yet</h4>
+        <p class="text-muted">You haven't added any places yet. Start by adding your first venue!</p>
+        <button class="btn btn-primary px-4">Add New Place</button>
+    </div>
+
+    <!-- Places Grid -->
+    <div *ngIf="!loading && places.length > 0" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <div class="col" *ngFor="let place of places">
+            <div class="card shadow-sm h-100 border-0 hover-effect">
+                <!-- Image with badge overlay -->
+                <div class="position-relative">
+                    <img [src]="getFullImageUrl(place.imageUrl)" alt="place-img" class="card-img-top"
+                        style="height: 200px; object-fit: cover;">
+                    <span class="position-absolute top-0 end-0 m-2 badge rounded-pill" [ngClass]="{
+                          'bg-success': place.isApproved,
+                          'bg-warning text-dark': !place.isApproved
+                      }">
+                        <ng-container *ngIf="place.isApproved">
+                            Approved <i class="fas fa-check-circle ms-1"></i>
+                        </ng-container>
+                        <ng-container *ngIf="!place.isApproved">
+                            Pending <i class="fas fa-clock ms-1"></i>
+                        </ng-container>
+                    </span>
+                </div>
+
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title text-primary mb-3"><i class="fas fa-home me-2"></i>{{ place.placeTypeName }}
+                    </h5>
+
+                    <!-- Place Details -->
+                    <div class="mb-3">
+                        <p class="card-text mb-2">
+                            <i class="fas fa-map-marker-alt text-secondary me-2"></i>
+                            <span class="text-muted">{{ place.location }}</span>
+                        </p>
+                        <p class="card-text mb-2">
+                            <i class="fas fa-users text-secondary me-2"></i>
+                            <span class="text-muted">Max {{ place.maxAttendees }} attendees</span>
+                        </p>
+                        <p class="card-text mb-2">
+                            <i class="fas fa-pound-sign text-secondary me-2"></i>
+                            <span class="text-muted">{{ place.price }} EGP</span>
+                        </p>
+                    </div>
+
+                    <!-- Stripe Link -->
+                    <div *ngIf="place.stripePaymentLink" class="mb-3">
+                        <a [href]="place.stripePaymentLink" target="_blank" class="btn btn-sm btn-outline-info w-100">
+                            <i class="fab fa-stripe me-2"></i>Stripe Payment Link
+                        </a>
+                    </div>
+
+                    <!-- Documents Section -->
+                    <div class="mb-3 flex-grow-1">
+                        <h6 class="text-secondary fs-6 fw-bold mb-2">
+                            <i class="fas fa-file-alt me-2"></i>Documents
+                        </h6>
+
+
+                        <!-- (click)="openImage(event.publicLicenseFrontUrl) -->
+                        <div class="d-flex flex-wrap gap-2">
+                            <a *ngIf="place.securityClearanceUrl" (click)="openImage(place.securityClearanceUrl)"
+                                class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-file-shield me-1"></i>Security
+                            </a>
+                            <a *ngIf="place.ownershipOrRentalContractUrl"
+                                (click)="openImage(place.ownershipOrRentalContractUrl)"
+                                class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-file-contract me-1"></i>Contract
+                            </a>
+                            <a *ngIf="place.nationalIdFrontUrl" (click)="openImage(place.nationalIdFrontUrl)"
+                                class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-id-card me-1"></i>ID Front
+                            </a>
+                            <a *ngIf="place.nationalIdBackUrl" (click)="openImage(place.nationalIdBackUrl)"
+                                class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-id-card me-1"></i>ID Back
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-grid gap-2 mt-auto">
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-outline-primary btn-sm flex-grow-1"
+                                (click)="goToEditPlace(place.id)">
+                                <i class="fas fa-edit me-1"></i>Edit
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm flex-grow-1" (click)="deletePlace(place.id)">
+                                <i class="fas fa-trash-alt me-1"></i>Delete
+                            </button>
+                        </div>
+                        <button class="btn btn-color btn-sm text-white" (click)="goToAvailability(place.id)">
+                            <i class="fas fa-calendar-alt me-1"></i>Manage Availabilities
+                        </button>
                     </div>
                 </div>
             </div>

@@ -5,6 +5,8 @@ import { Event } from '../../../models/admin-model';
 import { AdminService } from '../../../core/services/admin.service';
 import { LeafletMapService } from '../../../core/services/leaflet-map.service';
 import { UrlServiceService } from '../../../core/services/url/url-service.service';
+import { ImagePreviewService } from '../../../core/services/shared/services/image-preview.service';
+import { get } from 'http';
 
 @Component({
   selector: 'app-admin-events',
@@ -27,7 +29,8 @@ export class AdminEventsComponent implements OnInit, AfterViewChecked {
   constructor(
     private adminService: AdminService,
     private mapService: LeafletMapService,
-    private UrlService: UrlServiceService
+    private UrlService: UrlServiceService,
+    private imagePreviewService: ImagePreviewService
   ) {}
 
   ngOnInit(): void {
@@ -136,5 +139,10 @@ export class AdminEventsComponent implements OnInit, AfterViewChecked {
   getFullFileUrl(url: string | null): string {
     if (!url) return '';
     return this.UrlService.getFullImageUrl(url);
+  }
+
+  openImage(url: string) {
+    url = this.getFullFileUrl(url);
+    this.imagePreviewService.showImage(url);
   }
 }

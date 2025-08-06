@@ -1,27 +1,41 @@
-<div class="container mt-5">
-    <h2>Manage Place Availability</h2>
-    <p>
-        <strong>Instructions:</strong><br>
-        - Click any date to block it (unavailable for booking).<br>
-        - Click a blocked date again to make it available.<br>
-        - Blocked dates are listed below.
-    </p>
+<div class="container my-5">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3 class="card-title mb-3">
+                <i class="bi bi-calendar-x me-2 text-danger"></i>
+                Manage Place Availability
+            </h3>
 
-    <mat-form-field appearance="fill">
-        <mat-label>Block or Unblock a Date</mat-label>
-        <input matInput [matDatepicker]="picker" (dateChange)="onDateSelect($event.value)" placeholder="Choose a date">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
+            <p class="mb-4 text-muted">
+                <strong>Instructions:</strong><br>
+                <i class="bi bi-dot"></i> Click any date to <strong>block</strong> it (unavailable for booking).<br>
+                <i class="bi bi-dot"></i> Click a blocked date again to <strong>unblock</strong> it.<br>
+                <i class="bi bi-dot"></i> Blocked dates will appear below.
+            </p>
 
-    <div class="mt-3">
-        <h5>Blocked Dates:</h5>
-        <ul>
-            <li *ngFor="let d of blockedDates">
-                <span class="text-danger">{{ d | date: 'fullDate' }}</span>
-                <button mat-button color="warn" (click)="unblockDate(d)">Unblock</button>
-            </li>
-            <li *ngIf="blockedDates.length === 0"><i>No blocked dates yet.</i></li>
-        </ul>
+            <mat-form-field appearance="fill" class="w-100 ">
+                <mat-label>Select a Date</mat-label>
+                <input matInput [matDatepicker]="picker" (dateChange)="onDateSelect($event.value)"
+                    placeholder="Choose a date" />
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <div class="mt-4">
+                <h5 class="mb-3">
+                    <i class="bi bi-calendar-check me-1 text-success"></i> Blocked Dates
+                </h5>
+                <ul class="list-group">
+                    <li *ngFor="let d of blockedDates"
+                        class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="text-danger">{{ d | date: 'fullDate' }}</span>
+                        <button mat-raised-button color="warn" (click)="unblockDate(d)">Unblock</button>
+                    </li>
+                    <li *ngIf="blockedDates.length === 0" class="list-group-item text-muted fst-italic">
+                        <i class="bi bi-info-circle me-1"></i> No blocked dates yet.
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>

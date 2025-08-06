@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ProviderPlaceService } from '../../../../core/services/providerPlace/provider-place.service';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { environment } from '../../../../core/environment/environment';
+import { Router, RouterLink } from '@angular/router';
 import { UrlServiceService } from '../../../../core/services/url/url-service.service';
+import { ImagePreviewService } from '../../../../core/services/shared/services/image-preview.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-my-places',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './my-places.component.html',
   styleUrl: './my-places.component.scss',
 })
@@ -18,7 +18,8 @@ export class MyPlacesComponent implements OnInit {
   constructor(
     private placeService: ProviderPlaceService,
     private urlService: UrlServiceService,
-    private router: Router
+    private router: Router,
+    private imagePreviewService: ImagePreviewService
   ) {}
 
   ngOnInit(): void {
@@ -44,11 +45,17 @@ export class MyPlacesComponent implements OnInit {
     return this.urlService.getFullImageUrl(img);
   }
 
+  openImage(url: string) {
+    url = this.getFullImageUrl(url);
+    this.imagePreviewService.showImage(url);
+  }
+
   goToEditPlace(placeId: string): void {
     this.router.navigate(['dashboard/editPlace', placeId]);
   }
 
   goToAvailability(placeId: string): void {
+    console.log('PlaceAvailability/:id' + placeId);
     this.router.navigate(['/dashboard/PlaceAvailability', placeId]);
   }
 

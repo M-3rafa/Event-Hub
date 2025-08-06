@@ -9,6 +9,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import L from 'leaflet';
 import { ProviderPlaceService } from '../../../../core/services/providerPlace/provider-place.service';
 import { CommonModule } from '@angular/common';
+import { UrlServiceService } from '../../../../core/services/url/url-service.service';
+import { ImagePreviewService } from '../../../../core/services/shared/services/image-preview.service';
 
 @Component({
   selector: 'app-edit-place',
@@ -40,7 +42,9 @@ export class EditPlaceComponent implements OnInit, AfterViewInit, OnDestroy {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private placeService: ProviderPlaceService
+    private placeService: ProviderPlaceService,
+    private UrlService: UrlServiceService,
+    private imagePreviewService: ImagePreviewService
   ) {
     this.form = this.fb.group({
       placeTypeName: ['', Validators.required],
@@ -201,6 +205,16 @@ export class EditPlaceComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loading = false;
       },
     });
+  }
+
+  getFullFileUrl(url: string | null): string {
+    if (!url) return '';
+    return this.UrlService.getFullImageUrl(url);
+  }
+
+  openImage(url: string) {
+    url = this.getFullFileUrl(url);
+    this.imagePreviewService.showImage(url);
   }
 
   ngOnDestroy(): void {

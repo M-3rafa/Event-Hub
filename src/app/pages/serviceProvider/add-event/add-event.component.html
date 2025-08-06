@@ -1,23 +1,15 @@
 <div class="container py-4" style="max-width: 800px;">
     <!-- Header with progress indicator -->
     <div class="text-center mb-4">
-        <h2 class="fw-bold">Create New Event</h2>
-        <div class="d-flex justify-content-center mt-3">
-            <div class="progress-steps">
-                <div class="step active">1. Basic Info</div>
-                <div class="step">2. Details</div>
-                <div class="step">3. Documents</div>
-                <div class="step">4. Tickets</div>
-            </div>
-        </div>
+        <h2 class="fw-bold"><i class="fas fa-calendar-plus me-2"></i>Create New Event</h2>
     </div>
 
     <form [formGroup]="addForm" (ngSubmit)="submit()" enctype="multipart/form-data" novalidate>
         <!-- 📌 Basic Information Section -->
         <div class="card shadow-sm mb-4">
-            <div class="card-header bg-light">
+            <div class="card-header bg-book text-light">
                 <h5 class="mb-0">
-                    <i class="bi bi-info-circle me-2"></i>
+                    <i class="fas fa-info-circle me-2"></i>
                     Basic Information
                 </h5>
             </div>
@@ -58,7 +50,7 @@
         <div *ngIf="eventType" class="card shadow-sm mb-4">
             <div class="card-header bg-light">
                 <h5 class="mb-0">
-                    <i class="bi bi-card-checklist me-2"></i>
+                    <i class="fas fa-tasks me-2"></i>
                     Event Details
                 </h5>
             </div>
@@ -102,9 +94,9 @@
 
         <!-- 💳 Payment Information -->
         <div class="card shadow-sm mb-4">
-            <div class="card-header bg-light">
+            <div class="card-header bg-book text-light">
                 <h5 class="mb-0">
-                    <i class="bi bi-credit-card me-2"></i>
+                    <i class="fas fa-credit-card me-2"></i>
                     Payment Information
                 </h5>
             </div>
@@ -121,9 +113,9 @@
 
         <!-- 🗺️ Location Section -->
         <div class="card shadow-sm mb-4">
-            <div class="card-header bg-light">
-                <h5 class="mb-0">
-                    <i class="bi bi-geo-alt me-2"></i>
+            <div class="card-header bg-book text-light">
+                <h5 class="mb-0 ">
+                    <i class="fas fa-map-marker-alt me-2"></i>
                     Location
                 </h5>
             </div>
@@ -155,31 +147,31 @@
 
         <!-- 📄 Documents Section -->
         <div class="card shadow-sm mb-4">
-            <div class="card-header bg-light">
-                <h5 class="mb-0">
-                    <i class="bi bi-files me-2"></i>
+            <div class="card-header bg-book text-light">
+                <h5 class="mb-0 ">
+                    <i class="fas fa-file-alt me-2"></i>
                     Required Documents
                 </h5>
             </div>
             <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-6" *ngFor="let doc of [
-                        { name: 'Image', label: 'Event Poster Image', required: true, icon: 'bi-image' },
-                        { name: 'SecurityClearance', label: 'Security Clearance', required: true, icon: 'bi-shield-lock' },
-                        { name: 'PublicLicenseFront', label: 'Public License (Front)', required: true, icon: 'bi-file-text' },
-                        { name: 'PublicLicenseBack', label: 'Public License (Back)', required: true, icon: 'bi-file-text' },
-                        { name: 'CivilProtectionApprovalFront', label: 'Civil Protection (Front)', required: true, icon: 'bi-file-earmark-medical' },
-                        { name: 'CivilProtectionApprovalBack', label: 'Civil Protection (Back)', required: true, icon: 'bi-file-earmark-medical' },
-                        { name: 'EventInsurance', label: 'Event Insurance', required: false, icon: 'bi-file-earmark-break' }
+                        { name: 'Image', label: 'Event Poster Image', required: true, icon: 'fa-image' },
+                        { name: 'SecurityClearance', label: 'Security Clearance', required: true, icon: 'fa-file-shield' },
+                        { name: 'PublicLicenseFront', label: 'Public License (Front)', required: true, icon: 'fa-id-card' },
+                        { name: 'PublicLicenseBack', label: 'Public License (Back)', required: true, icon: 'fa-id-card' },
+                        { name: 'CivilProtectionApprovalFront', label: 'Civil Protection (Front)', required: true, icon: 'fa-file-certificate' },
+                        { name: 'CivilProtectionApprovalBack', label: 'Civil Protection (Back)', required: true, icon: 'fa-file-certificate' },
+                        { name: 'EventInsurance', label: 'Event Insurance', required: false, icon: 'fa-file-invoice-dollar' }
                     ]">
                         <div class="document-upload">
                             <label class="form-label">
-                                <i class="bi {{doc.icon}} me-1"></i>
+                                <i class="fas {{doc.icon}} me-1"></i>
                                 {{doc.label}}
                                 <span *ngIf="doc.required" class="text-danger">*</span>
                             </label>
                             <input type="file" class="form-control" (change)="onFileSelected($event, doc.name)"
-                                [required]="doc.required" />
+                                [required]="doc.required" accept="image/*" />
                             <small *ngIf="doc.required" class="text-muted">Required</small>
                         </div>
                     </div>
@@ -189,9 +181,9 @@
 
         <!-- 🎫 Ticket Types Section -->
         <div class="card shadow-sm mb-4">
-            <div class="card-header bg-light">
-                <h5 class="mb-0">
-                    <i class="bi bi-ticket-perforated me-2"></i>
+            <div class="card-header bg-book text-light">
+                <h5 class="mb-0 ">
+                    <i class="fas fa-ticket-alt me-2"></i>
                     Ticket Types
                 </h5>
             </div>
@@ -218,7 +210,7 @@
                             </div>
                             <div class="col-md-2 text-end">
                                 <button type="button" class="btn btn-outline-danger" (click)="removeTicketType(i)">
-                                    <i class="bi bi-trash"></i>
+                                    <i class="fas fa-trash"></i>
                                 </button>
                             </div>
                         </div>
@@ -226,15 +218,15 @@
                 </div>
 
                 <button type="button" class="btn btn-outline-primary mt-2" (click)="addTicketType()">
-                    <i class="bi bi-plus-circle me-1"></i> Add Ticket Type
+                    <i class="fas fa-plus-circle me-1"></i> Add Ticket Type
                 </button>
             </div>
         </div>
 
         <!-- Form Actions -->
         <div class="d-flex justify-content-between mt-4">
-            <button type="button" class="btn btn-outline-secondary" routerLink="/events">
-                <i class="bi bi-arrow-left me-1"></i> Cancel
+            <button type="button" class="btn btn-outline-secondary" routerLink="/dashboard/myevents">
+                <i class="fas fa-arrow-left me-1"></i> Cancel
             </button>
             <button type="submit" class="btn btn-primary px-4" [disabled]="submitting || addForm.invalid">
                 <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1" role="status"
@@ -245,7 +237,7 @@
 
         <!-- Error Message -->
         <div *ngIf="errorMsg" class="alert alert-danger mt-3">
-            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <i class="fas fa-exclamation-triangle me-2"></i>
             {{ errorMsg }}
         </div>
     </form>

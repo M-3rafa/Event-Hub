@@ -1,0 +1,47 @@
+.map-container {
+  height: 320px;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.map-container:hover {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.file-upload {
+  padding: 0.5rem;
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.file-upload:hover {
+  border-color: #0d6efd;
+  background-color: #f8f9fa;
+}
+
+.file-upload::file-selector-button {
+  padding: 0.5rem 1rem;
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  margin-right: 1rem;
+  transition: all 0.2s ease;
+}
+
+.file-upload::file-selector-button:hover {
+  background-color: #e9ecef;
+  cursor: pointer;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.container {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}

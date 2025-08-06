@@ -24,10 +24,7 @@ export const serverRoutes: ServerRoute[] = [
     path: 'dashboard/editPlace/:id',
     renderMode: RenderMode.Client,
   },
-  {
-    path: 'dashboard/PlaceAvailability/:id',
-    renderMode: RenderMode.Client,
-  },
+
   {
     path: 'User/EventsDetails/:id',
     renderMode: RenderMode.Client,

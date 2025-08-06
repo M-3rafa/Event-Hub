@@ -7,7 +7,6 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @Component({
   selector: 'app-place-availability',
   imports: [
@@ -17,7 +16,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    BrowserAnimationsModule,
   ],
   templateUrl: './place-availability.component.html',
   styleUrl: './place-availability.component.scss',
@@ -32,6 +30,7 @@ export class PlaceAvailabilityComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log('ok ,ma');
     this.placeId = +this.route.snapshot.paramMap.get('id')!;
     this.fetchBlockedDates();
   }

@@ -1,88 +1,184 @@
-<div class="container py-4" style="max-width: 700px;" *ngIf="!loading">
-    <h2 class="mb-4 text-center">Edit Place</h2>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label>Place Type*</label>
-            <select formControlName="placeTypeName" class="form-select" required>
-                <option value="">Select Place Type</option>
-                <option *ngFor="let t of placeTypes" [value]="t">{{ t }}</option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label>Location Description*</label>
-            <input formControlName="location" class="form-control" placeholder="e.g., Cairo Tower" required />
-        </div>
-        <div class="mb-3">
-            <label>Pick Location on Map (drag marker):</label>
-            <div id="editPlaceMap" style="height: 320px; width: 100%; border:1px solid #aaa; border-radius: 10px;">
+<div class="container py-4" style="max-width: 900px;" *ngIf="!loading">
+    <h2 class="mb-4 text-center  fw-bold">
+        <i class="fas fa-edit me-2"></i>Edit Place
+    </h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" enctype="multipart/form-data"
+        class="bg-light p-4 rounded-3 shadow-sm">
+        <!-- Basic Information Section -->
+        <div class="card mb-4 border-0 shadow-sm">
+            <div class="card-header bg-book text-white">
+                <i class="fas fa-info-circle me-2"></i>Basic Information
             </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col">
-                <label>Latitude*</label>
-                <input formControlName="latitude" class="form-control" readonly />
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Place Type*</label>
+                    <select formControlName="placeTypeName" class="form-select" required>
+                        <option value="">Select Place Type</option>
+                        <option *ngFor="let t of placeTypes" [value]="t">{{ t }}</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Location Description*</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                        <input formControlName="location" class="form-control" placeholder="e.g., Cairo Tower"
+                            required />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Max Attendees*</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-users"></i></span>
+                        <input formControlName="maxAttendees" type="number" min="1" class="form-control" required />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Price (EGP)*</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-pound-sign"></i></span>
+                        <input formControlName="price" type="number" min="1" class="form-control" required />
+                    </div>
+                </div>
             </div>
-            <div class="col">
-                <label>Longitude*</label>
-                <input formControlName="longitude" class="form-control" readonly />
-            </div>
-        </div>
-        <div class="mb-3">
-            <label>Max Attendees*</label>
-            <input formControlName="maxAttendees" type="number" min="1" class="form-control" required />
-        </div>
-        <div class="mb-3">
-            <label>Price (EGP)*</label>
-            <input formControlName="price" type="number" min="1" class="form-control" required />
-        </div>
-        <div class="mb-3">
-            <label>Stripe Payment Link*</label>
-            <input formControlName="stripePaymentLink" class="form-control" placeholder="Stripe link" required />
         </div>
 
-        <!-- ملفات وصورة حالية + رفع جديد -->
-        <div class="mb-3">
-            <label>Place Image</label>
-            <input type="file" (change)="onFileSelected($event, 'image')" class="form-control" />
-            <div *ngIf="imagePreview">
-                <img [src]="imagePreview" alt="Current Place Image" style="max-width:140px; margin-top:8px;">
+        <!-- Location Section -->
+        <div class="card mb-4 border-0 shadow-sm">
+            <div class="card-header bg-book text-white">
+                <i class="fas fa-map-marked-alt me-2"></i>Location on Map
             </div>
-            <div *ngIf="!imagePreview && current.imageUrl">
-                <a [href]="current.imageUrl" target="_blank">View Current Image</a>
-            </div>
-        </div>
-        <div class="mb-3">
-            <label>Security Clearance</label>
-            <input type="file" (change)="onFileSelected($event, 'securityClearance')" class="form-control" />
-            <div *ngIf="current.securityClearanceUrl">
-                <a [href]="current.securityClearanceUrl" target="_blank">View Current File</a>
-            </div>
-        </div>
-        <div class="mb-3">
-            <label>Ownership/Rental Contract</label>
-            <input type="file" (change)="onFileSelected($event, 'ownershipOrRentalContract')" class="form-control" />
-            <div *ngIf="current.ownershipOrRentalContractUrl">
-                <a [href]="current.ownershipOrRentalContractUrl" target="_blank">View Current File</a>
-            </div>
-        </div>
-        <div class="mb-3">
-            <label>National ID (Front)</label>
-            <input type="file" (change)="onFileSelected($event, 'nationalIdFront')" class="form-control" />
-            <div *ngIf="current.nationalIdFrontUrl">
-                <a [href]="current.nationalIdFrontUrl" target="_blank">View Current File</a>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Pick Location on Map (drag marker):</label>
+                    <div id="editPlaceMap"
+                        style="height: 300px; width: 100%; border:1px solid #ddd; border-radius: 8px;"></div>
+                </div>
+
+                <div class="row mb-0">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Latitude*</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-globe"></i></span>
+                            <input formControlName="latitude" class="form-control" readonly />
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Longitude*</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-globe"></i></span>
+                            <input formControlName="longitude" class="form-control" readonly />
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="mb-3">
-            <label>National ID (Back)</label>
-            <input type="file" (change)="onFileSelected($event, 'nationalIdBack')" class="form-control" />
-            <div *ngIf="current.nationalIdBackUrl">
-                <a [href]="current.nationalIdBackUrl" target="_blank">View Current File</a>
+
+        <!-- Payment Section -->
+        <div class="card mb-4 border-0 shadow-sm">
+            <div class="card-header bg-book text-white">
+                <i class="fab fa-stripe me-2"></i>Payment Information
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Stripe Payment Link*</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-link"></i></span>
+                        <input formControlName="stripePaymentLink" class="form-control" placeholder="https://..."
+                            required />
+                    </div>
+                </div>
             </div>
         </div>
-        <div *ngIf="errorMsg" class="alert alert-danger">{{ errorMsg }}</div>
-        <button type="submit" class="btn btn-primary">Update Place</button>
+
+        <!-- Documents Section -->
+        <div class="card mb-4 border-0 shadow-sm">
+            <div class="card-header bg-book text-white">
+                <i class="fas fa-file-alt me-2"></i>Documents & Images
+            </div>
+            <div class="card-body">
+                <!-- Place Image -->
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Place Image</label>
+                    <input type="file" (change)="onFileSelected($event, 'image')" class="form-control mb-2"
+                        accept="image/*" />
+                    <div *ngIf="imagePreview" class="text-center mt-2">
+                        <img [src]="imagePreview" alt="New Place Image" class="img-thumbnail"
+                            style="max-height: 150px;">
+                        <p class="text-muted small mt-2">New image preview</p>
+                    </div>
+                    <div *ngIf="!imagePreview && current.imageUrl" class="text-center mt-2">
+                        <img [src]="current.imageUrl" alt="Current Place Image" class="img-thumbnail"
+                            style="max-height: 150px;">
+                        <p class="text-muted small mt-2">Current image</p>
+                    </div>
+                </div>
+
+                <!-- Document Uploads -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Security Clearance</label>
+
+                        <!-- (click)="openImage(event.publicLicenseFrontUrl) -->
+                        <input type="file" (change)="onFileSelected($event, 'securityClearance')" class="form-control"
+                            accept="image/*" />
+                        <div *ngIf="current.securityClearanceUrl" class="mt-2">
+                            <a (click)="openImage(current.securityClearanceUrl)" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-eye me-1"></i>View Current
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Ownership/Rental Contract</label>
+                        <input type="file" (change)="onFileSelected($event, 'ownershipOrRentalContract')"
+                            class="form-control" accept="image/*" />
+                        <div *ngIf="current.ownershipOrRentalContractUrl" class="mt-2">
+                            <a (click)="openImage(current.ownershipOrRentalContractUrl)"
+                                class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-eye me-1"></i>View Current
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">National ID (Front)</label>
+                        <input type="file" (change)="onFileSelected($event, 'nationalIdFront')" class="form-control"
+                            accept="image/*" />
+                        <div *ngIf="current.nationalIdFrontUrl" class="mt-2">
+                            <a (click)="openImage(current.nationalIdFrontUrl)" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-eye me-1"></i>View Current
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">National ID (Back)</label>
+                        <input type="file" (change)="onFileSelected($event, 'nationalIdBack')" class="form-control"
+                            accept="image/*" />
+                        <div *ngIf="current.nationalIdBackUrl" class="mt-2">
+                            <a (click)="openImage(current.nationalIdBackUrl)" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-eye me-1"></i>View Current
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div *ngIf="errorMsg" class="alert alert-danger">
+            <i class="fas fa-exclamation-circle me-2"></i>{{ errorMsg }}
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+
+            <button type="submit" class="btn btn-gradient px-4">
+                <i class="fas fa-save me-2"></i>Update Place
+            </button>
+        </div>
     </form>
-</div>
-<div *ngIf="loading" class="text-center py-5">
-    <div class="spinner-border"></div>
 </div>

@@ -1,65 +1,128 @@
 <div class="container py-4" style="max-width: 700px;">
-    <h2 class="mb-4 text-center">Add New Place</h2>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+    <h2 class="mb-4 text-center fw-bold">Add New Place</h2>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" enctype="multipart/form-data" class="needs-validation" novalidate>
+        <!-- Place Type -->
         <div class="mb-3">
-            <label>Place Type*</label>
-            <select formControlName="placeTypeName" class="form-select" required>
+            <label class="form-label fw-semibold">Place Type <span class="text-danger">*</span></label>
+            <select formControlName="placeTypeName" class="form-select form-select-lg" required>
                 <option value="">Select Place Type</option>
                 <option *ngFor="let t of placeTypes" [value]="t">{{ t }}</option>
             </select>
         </div>
+
+        <!-- Location -->
         <div class="mb-3">
-            <label>Location Description*</label>
-            <input formControlName="location" class="form-control" placeholder="e.g., Cairo Tower" required />
+            <label class="form-label fw-semibold">Location Description <span class="text-danger">*</span></label>
+            <input formControlName="location" class="form-control form-control-lg" placeholder="e.g., Cairo Tower"
+                required />
         </div>
+
+        <!-- Map Section -->
         <div class="mb-3">
-            <label>Pick Location on Map (drag marker):</label>
-            <div id="placeMap" style="height: 320px; width: 100%; border:1px solid #aaa; border-radius: 10px;"></div>
+            <label class="form-label fw-semibold">Pick Location on Map <small class="text-muted">(drag
+                    marker)</small></label>
+            <div id="placeMap" class="map-container border border-2 rounded-3"></div>
         </div>
-        <div class="row mb-3">
+
+        <!-- Coordinates -->
+        <div class="row mb-3 g-3">
             <div class="col">
-                <label>Latitude*</label>
+                <label class="form-label fw-semibold">Latitude <span class="text-danger">*</span></label>
                 <input formControlName="latitude" class="form-control" readonly />
             </div>
             <div class="col">
-                <label>Longitude*</label>
+                <label class="form-label fw-semibold">Longitude <span class="text-danger">*</span></label>
                 <input formControlName="longitude" class="form-control" readonly />
             </div>
         </div>
-        <div class="mb-3">
-            <label>Max Attendees*</label>
-            <input formControlName="maxAttendees" type="number" min="1" class="form-control" required />
+
+        <!-- Capacity & Pricing -->
+        <div class="row mb-3 g-3">
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Max Attendees <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
+                    <input formControlName="maxAttendees" type="number" min="1" class="form-control" required />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Price (EGP) <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <span class="input-group-text">EGP</span>
+                    <input formControlName="price" type="number" min="1" class="form-control" required />
+                </div>
+            </div>
         </div>
+
+        <!-- Payment Link -->
         <div class="mb-3">
-            <label>Price (EGP)*</label>
-            <input formControlName="price" type="number" min="1" class="form-control" required />
+            <label class="form-label fw-semibold">Stripe Payment Link <span class="text-danger">*</span></label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-credit-card"></i></span>
+                <input formControlName="stripePaymentLink" class="form-control" placeholder="https://stripe.com/..."
+                    required />
+            </div>
         </div>
-        <div class="mb-3">
-            <label>Stripe Payment Link*</label>
-            <input formControlName="stripePaymentLink" class="form-control" placeholder="Stripe link" required />
+
+        <!-- File Uploads Section -->
+        <div class="card mb-4 border-primary">
+            <div class="card-header bg-book text-white fw-semibold">
+                <i class="bi bi-cloud-upload me-2"></i>Required Documents
+            </div>
+            <div class="card-body">
+                <!-- Place Image -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Place Image <span class="text-danger">*</span></label>
+                    <input type="file" (change)="onFileSelected($event, 'image')" class="form-control file-upload"
+                        accept="image/*" required />
+                </div>
+
+                <!-- Security Clearance -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Security Clearance <span class="text-danger">*</span></label>
+                    <input type="file" (change)="onFileSelected($event, 'securityClearance')"
+                        class="form-control file-upload" required />
+                </div>
+
+                <!-- Ownership/Rental Contract -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Ownership/Rental Contract <span
+                            class="text-danger">*</span></label>
+                    <input type="file" (change)="onFileSelected($event, 'ownershipOrRentalContract')"
+                        class="form-control file-upload" required />
+                </div>
+
+                <!-- National ID -->
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">National ID (Front) <span
+                                class="text-danger">*</span></label>
+                        <input type="file" (change)="onFileSelected($event, 'nationalIdFront')"
+                            class="form-control file-upload" accept="image/*" required />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">National ID (Back) <span
+                                class="text-danger">*</span></label>
+                        <input type="file" (change)="onFileSelected($event, 'nationalIdBack')"
+                            class="form-control file-upload" accept="image/*" required />
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="mb-3">
-            <label>Place Image*</label>
-            <input type="file" (change)="onFileSelected($event, 'image')" class="form-control" required />
+
+        <!-- Error Message -->
+        <div *ngIf="errorMsg" class="alert alert-danger alert-dismissible fade show">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            {{ errorMsg }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-        <div class="mb-3">
-            <label>Security Clearance*</label>
-            <input type="file" (change)="onFileSelected($event, 'securityClearance')" class="form-control" required />
+
+        <!-- Submit Button -->
+        <div class="d-grid">
+            <button [disabled]="submitting" type="submit" class="btn btn-gradient btn-lg">
+                <span *ngIf="submitting" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                {{ submitting ? 'Adding Place...' : 'Add Place' }}
+            </button>
         </div>
-        <div class="mb-3">
-            <label>Ownership/Rental Contract*</label>
-            <input type="file" (change)="onFileSelected($event, 'ownershipOrRentalContract')" class="form-control"
-                required />
-        </div>
-        <div class="mb-3">
-            <label>National ID (Front)*</label>
-            <input type="file" (change)="onFileSelected($event, 'nationalIdFront')" class="form-control" required />
-        </div>
-        <div class="mb-3">
-            <label>National ID (Back)*</label>
-            <input type="file" (change)="onFileSelected($event, 'nationalIdBack')" class="form-control" required />
-        </div>
-        <div *ngIf="errorMsg" class="alert alert-danger">{{ errorMsg }}</div>
-        <button [disabled]="submitting" type="submit" class="btn btn-success">Add Place</button>
     </form>
 </div>

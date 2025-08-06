@@ -1,0 +1,36 @@
+.card {
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.details-expand {
+  animation: fadeInDown 0.3s ease;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  border-left: 5px solid #007bff;
+  padding-left: 12px;
+  margin-bottom: 20px;
+}
+
+.form-select {
+  min-width: 180px;
+}

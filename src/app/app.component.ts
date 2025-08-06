@@ -4,17 +4,10 @@ import { FooterComponent } from './layouts/footer/footer.component';
 import { NavbarComponent } from './layouts/navbar/navbar.component';
 import { TokenService } from './core/services/token.service';
 import { CommonModule } from '@angular/common';
-import { SpaceBackgroundComponent } from './layouts/space-background/space-background.component';
 
 @Component({
   selector: 'app-root',
-  imports: [
-    RouterOutlet,
-    NavbarComponent,
-    FooterComponent,
-    CommonModule,
-    SpaceBackgroundComponent,
-  ],
+  imports: [RouterOutlet, NavbarComponent, FooterComponent, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
