@@ -1,5 +1,47 @@
-<p>become-provider works!</p>
-<div class="container text-center mt-5">
-    <h2 class="text-success">{{ message }}</h2>
-    <p class="lead">You can now start adding your events and places.</p>
-</div>
+<section class="provider-section">
+    <div class="provider-container">
+        <h2 class="form-title">Apply to Become a Service Provider</h2>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+            <!-- National ID Front -->
+            <div class="form-group">
+                <label><i class="fas fa-id-card me-1"></i> <b>National ID (Front)*</b></label>
+                <input type="file" (change)="onFileSelected($event, 'nationalIdFront')" accept="image/*"
+                    class="form-control" required />
+                <img *ngIf="nationalIdFrontPreview" [src]="nationalIdFrontPreview" alt="Preview" class="preview-img" />
+            </div>
+
+            <!-- National ID Back -->
+            <div class="form-group">
+                <label> <i class="fas fa-id-card me-1"></i> <b>National ID (Back)*</b></label>
+                <input type="file" (change)="onFileSelected($event, 'nationalIdBack')" accept="image/*"
+                    class="form-control" required />
+                <img *ngIf="nationalIdBackPreview" [src]="nationalIdBackPreview" alt="Preview" class="preview-img" />
+            </div>
+
+            <!-- Holding ID -->
+            <div class="form-group">
+                <label> <i class="fas fa-image me-1"></i><b>Photo holding National ID*</b></label>
+                <input type="file" (change)="onFileSelected($event, 'holdingId')" accept="image/*" class="form-control"
+                    required />
+                <img *ngIf="holdingIdPreview" [src]="holdingIdPreview" alt="Preview" class="preview-img" />
+            </div>
+
+            <!-- Stripe link  -->
+            <div class="form-group">
+                <label><i class="fas fa-file-invoice-dollar me-1"></i>Stripe Payment Link (optional)</label>
+                <input formControlName="stripePaymentLink" class="form-control"
+                    placeholder="Paste Stripe link if you have one" />
+            </div>
+
+            <!-- Messages -->
+            <div *ngIf="errorMsg" class="alert alert-danger">{{ errorMsg }}</div>
+            <div *ngIf="successMsg" class="alert alert-success">{{ successMsg }}</div>
+
+            <!-- Submit -->
+            <button type="submit" class="submit-btn" [disabled]="submitting">
+                {{ submitting ? 'Submitting...' : 'Submit Request' }}
+            </button>
+        </form>
+    </div>
+</section>

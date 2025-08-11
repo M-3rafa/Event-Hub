@@ -186,6 +186,15 @@ export const routes: Routes = [
               ).then((m) => m.BecomeProviderComponent),
             title: 'become-provider',
           },
+
+          {
+            path: 'Places',
+            loadComponent: () =>
+              import(
+                './pages/user/userPlace/place-list/place-list.component'
+              ).then((m) => m.PlaceListComponent),
+            title: 'Place',
+          },
         ],
       },
     ],

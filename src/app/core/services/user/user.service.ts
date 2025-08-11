@@ -23,6 +23,9 @@ export class UserService {
     });
   }
 
+  getPlaces(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.baseUrl}/User/places`);
+  }
   getPlaceById(id: number): Observable<any> {
     return this.http.get(`${environment.baseUrl}/User/place/${id}`);
   }

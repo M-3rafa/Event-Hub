@@ -1,6 +1,5 @@
 .custom-navbar {
   background-color: rgba(28, 15, 57, 0.95);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   border-bottom: 2px solid #6a5acd;
   box-shadow: 0 -4px 10px rgba(106, 90, 205, 0.3);
 }
@@ -30,7 +29,7 @@
 /* Gradient button */
 .btn-gradient {
   background: linear-gradient(45deg, #7847eb, #f472b6);
-  color: white;
+  color: white !important;
   border: none;
   padding: 6px 16px;
   border-radius: 25px;
@@ -39,8 +38,16 @@
 
 .btn-gradient:hover {
   background: linear-gradient(45deg, #38bdf8, #7847eb);
-  color: white;
+  color: white !important;
 }
+
 .pointer {
   cursor: pointer;
+}
+
+/* Responsive: تقليل حجم الخط على الموبايل */
+@media (max-width: 576px) {
+  .text-logo {
+    font-size: 22px;
+  }
 }

@@ -1,4 +1,23 @@
 /* Gradient button */
+:root {
+  --color1-: #4c2a90;
+  --color2-: #ac65ee;
+  --color3-: #f472b6;
+  --color4-: #2d1b55;
+}
+.color1 {
+  color: var(--color1-);
+}
+.color2 {
+  color: var(--color2-);
+}
+.color3 {
+  color: var(--color3-);
+}
+.color4 {
+  color: var(--color4-);
+}
+
 @mixin shared-bg {
   background: linear-gradient(45deg, #7847eb);
 }
@@ -16,6 +35,7 @@
 .btn-color:hover {
   background: linear-gradient(45deg, #38bdf8, #7847eb);
   color: white;
+  transform: translateY(-5px);
 }
 
 .btn-gradient {
@@ -30,6 +50,7 @@
 .btn-gradient:hover {
   background: linear-gradient(45deg, #38bdf8, #7847eb);
   color: white;
+  transform: translateY(-5px);
 }
 
 // sidebar style

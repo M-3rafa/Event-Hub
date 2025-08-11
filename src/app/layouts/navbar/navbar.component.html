@@ -1,55 +1,50 @@
-<nav class="navbar navbar-expand-lg custom-navbar ">
+<nav class="navbar navbar-expand-lg custom-navbar">
     <div class="container">
-        <!-- Text Logo -->
+        <!-- Logo -->
         <a class="navbar-brand text-logo" href="#">Event <span>Hub</span></a>
 
-        <!-- Toggler for small screens -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <!-- Toggler -->
+        <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <!-- Links -->
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <!-- Common for all -->
-
+            <ul class="navbar-nav ms-auto text-center">
                 @if (isLoggedIn) {
                 <li class="nav-item">
                     <a class="nav-link" routerLink="/home">Home</a>
                 </li>
-                <li *ngIf="role?.includes( 'Admin')" class="nav-item">
+                <li *ngIf="role?.includes('Admin')" class="nav-item">
                     <a class="nav-link" routerLink="/admin/dashboard">Admin Dashboard</a>
                 </li>
-
                 <li *ngIf="role?.includes('Service Provider')" class="nav-item">
                     <a class="nav-link" routerLink="/dashboard/myevents">My Dashboard</a>
                 </li>
-
-
                 <li *ngIf="role?.includes('User')" class="nav-item">
                     <a class="nav-link" routerLink="/User/MyTickets">My Tickets</a>
                 </li>
                 <li *ngIf="role?.includes('User')" class="nav-item">
-                    <a class="nav-link" routerLink="/User/Checkout"> My Cart</a>
+                    <a class="nav-link" routerLink="/User/Checkout">My Cart</a>
                 </li>
-
-                <li *ngIf="role?.includes('User')" class="nav-item    ">
+                <li *ngIf="role?.includes('User')" class="nav-item">
                     <a class="nav-link" routerLink="/User/becomeprovider">BP</a>
                 </li>
-
                 <li class="nav-item">
-                    <a routerLink="/login" class="nav-link pointer text-danger" (click)="logout()">Logout</a>
+                    <a class="nav-link text-danger pointer" routerLink="/login" (click)="logout()">
+                        Logout
+                    </a>
                 </li>
                 }
                 @if (!isLoggedIn) {
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="/login">Login</a>
+                    <a class="nav-link" routerLink="/login" routerLinkActive="btn-gradient">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" routerLink="/register">Register</a>
+                    <a class="nav-link " routerLink="/register" routerLinkActive="btn-gradient">Register</a>
                 </li>
                 }
-
             </ul>
         </div>
     </div>

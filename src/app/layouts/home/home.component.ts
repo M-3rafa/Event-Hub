@@ -33,7 +33,7 @@ export class HomeComponent {
       name: 'Place',
       imageUrl: `assets/images/images.jpeg`,
       description: 'Cofee, Hall, and performing arts',
-      route: 'User/EventList',
+      route: 'User/Places',
     },
   ];
 }
