@@ -1,0 +1,73 @@
+/* الكارد الأساسي */
+.custom-card {
+  border-radius: 18px;
+  background: linear-gradient(145deg, #ffffff, #f7f9fc);
+}
+
+/* العنوان */
+.card-title {
+  color: #2c3e50;
+  font-size: 1.4rem;
+}
+
+/* Date Picker input */
+mat-form-field {
+  background: #fdfdfd;
+  border-radius: 12px !important;
+  padding: 6px 12px;
+}
+
+.mat-mdc-text-field-wrapper {
+  border-radius: 12px !important;
+}
+
+/* Calendar popup */
+.mat-datepicker-content {
+  border-radius: 16px !important;
+  background: #fff !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Calendar header */
+.mat-calendar-header {
+  background: #3f51b5 !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+/* Today */
+.mat-calendar-body-today {
+  border: 2px solid #3f51b5 !important;
+  border-radius: 50% !important;
+}
+
+/* Selected date */
+.mat-calendar-body-selected {
+  background-color: #ff7043 !important; /* برتقالي */
+  color: #fff !important;
+  border-radius: 50% !important;
+}
+
+/* Hover */
+.mat-calendar-body-cell:hover {
+  background-color: #e8eaf6 !important;
+  border-radius: 50% !important;
+}
+
+/* Blocked dates list */
+.blocked-date {
+  background: #fff8f8;
+  border-left: 4px solid #e53935;
+  transition: 0.3s;
+}
+
+.blocked-date:hover {
+  background: #ffeaea;
+}
+
+/* Unblock button */
+.btn-unblock {
+  border-radius: 8px !important;
+  font-weight: 600;
+  text-transform: none;
+}

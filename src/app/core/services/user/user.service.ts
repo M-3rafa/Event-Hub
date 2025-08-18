@@ -29,9 +29,15 @@ export class UserService {
   getPlaceById(id: number): Observable<any> {
     return this.http.get(`${environment.baseUrl}/User/place/${id}`);
   }
+  getAvailability(placeId: string): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${environment.baseUrl}/Place/${placeId}/availability`
+    );
+  }
 
-  bookPlace(id: number, date: string): Observable<any> {
-    return this.http.post(`${environment.baseUrl}/User/book-place/${id}`, {
+  reservePlace(placeId: string, date: string): Observable<any> {
+    return this.http.post<any>(`${environment.baseUrl}/User/reserve-place`, {
+      placeId,
       date,
     });
   }

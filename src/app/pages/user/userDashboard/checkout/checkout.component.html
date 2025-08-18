@@ -1,37 +1,68 @@
 <div class="container py-4">
     <h2 class="mb-4 text-center">Checkout</h2>
 
-    <div *ngIf="cart.length === 0" class="alert alert-info">
+    <div *ngIf="ticketCart.length === 0 && reservationCart.length === 0" class="alert alert-info">
         Your cart is empty.
     </div>
 
-    <table *ngIf="cart.length > 0" class="table table-bordered align-middle">
-        <thead>
-            <tr>
-                <th>Event</th>
-                <th>Ticket Type</th>
-                <th>Quantity</th>
-                <th>Price (EGP)</th>
-                <th>Total</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let ticket of cart; let i = index">
-                <td>{{ ticket.eventName }}</td>
-                <td>{{ ticket.ticketTypeName }}</td>
-                <td>{{ ticket.quantity }}</td>
-                <td>{{ ticket.price }}</td>
-                <td>{{ ticket.price * ticket.quantity }}</td>
-                <td>
-                    <button class="btn btn-success btn-sm" (click)="payTicket(i)"
-                        [disabled]="payingIndex === i">Pay</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <!-- Tickets Table -->
+    <div *ngIf="ticketCart.length > 0">
+        <h4>Event Tickets</h4>
+        <table class="table table-bordered align-middle">
+            <thead>
+                <tr>
+                    <th>Event</th>
+                    <th>Ticket Type</th>
+                    <th>Quantity</th>
+                    <th>Price (EGP)</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let ticket of ticketCart; let i = index">
+                    <td>{{ ticket.eventName }}</td>
+                    <td>{{ ticket.ticketTypeName }}</td>
+                    <td>{{ ticket.quantity }}</td>
+                    <td>{{ ticket.price }}</td>
+                    <td>{{ ticket.price * ticket.quantity }}</td>
+                    <td>
+                        <button class="btn btn-success btn-sm" (click)="payTicket(i)"
+                            [disabled]="payingTicketIndex === i">Pay</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-    <button class="btn btn-outline-danger" *ngIf="cart.length > 0" (click)="clearCart()">Clear Cart</button>
+    <!-- Reservations Table -->
+    <div *ngIf="reservationCart.length > 0" class="mt-4">
+        <h4>Place Reservations</h4>
+        <table class="table table-bordered align-middle">
+            <thead>
+                <tr>
+                    <th>Place</th>
+                    <th>Date</th>
+                    <th>Price (EGP)</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let reservation of reservationCart; let i = index">
+                    <td>{{ reservation.placeName }}</td>
+                    <td>{{ reservation.date | date:'yyyy-MM-dd' }}</td>
+                    <td>{{ reservation.price }}</td>
+                    <td>
+                        <button class="btn btn-success btn-sm" (click)="payReservation(i)"
+                            [disabled]="payingReservationIndex === i">Pay</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button class="btn btn-outline-danger" *ngIf="ticketCart.length > 0 || reservationCart.length > 0"
+        (click)="clearCart()">Clear Cart</button>
 
     <div *ngIf="payMessage" class="mt-3 alert alert-info">
         {{ payMessage }}

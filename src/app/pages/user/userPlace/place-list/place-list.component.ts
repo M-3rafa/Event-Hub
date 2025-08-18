@@ -61,6 +61,6 @@ export class PlaceListComponent implements OnInit {
   }
 
   goToPlaceDetails(id: number) {
-    this.router.navigate(['/user/place-details', id]);
+    this.router.navigate(['/User/PlacesDetails', id]);
   }
 }

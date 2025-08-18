@@ -1,19 +1,25 @@
 <div class="container my-5">
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <h3 class="card-title mb-3">
-                <i class="bi bi-calendar-x me-2 text-danger"></i>
+    <div class="card custom-card shadow-lg border-0">
+        <div class="card-body p-4">
+            <!-- Title -->
+            <h3 class="card-title mb-3  fw-bold d-flex align-items-center">
+                <i class="bi bi-calendar-x me-2"></i>
                 Manage Place Availability
             </h3>
 
+            <!-- Instructions -->
             <p class="mb-4 text-muted">
-                <strong>Instructions:</strong><br>
-                <i class="bi bi-dot"></i> Click any date to <strong>block</strong> it (unavailable for booking).<br>
-                <i class="bi bi-dot"></i> Click a blocked date again to <strong>unblock</strong> it.<br>
-                <i class="bi bi-dot"></i> Blocked dates will appear below.
+                <strong>How it works:</strong><br />
+                <i class="bi bi-check-circle-fill text-success me-1"></i> Click a date to
+                <strong>block</strong> it (unavailable).<br />
+                <i class="bi bi-arrow-counterclockwise text-warning me-1"></i> Click again
+                to <strong>unblock</strong>.<br />
+                <i class="bi bi-info-circle-fill text-info me-1"></i> Blocked dates are
+                listed below.
             </p>
 
-            <mat-form-field appearance="fill" class="w-100 ">
+            <!-- Date Picker -->
+            <mat-form-field appearance="fill" class="w-100 bg-light">
                 <mat-label>Select a Date</mat-label>
                 <input matInput [matDatepicker]="picker" (dateChange)="onDateSelect($event.value)"
                     placeholder="Choose a date" />
@@ -21,18 +27,26 @@
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
 
-            <div class="mt-4">
-                <h5 class="mb-3">
-                    <i class="bi bi-calendar-check me-1 text-success"></i> Blocked Dates
+            <!-- Blocked Dates -->
+            <div class="mt-5">
+                <h5 class="mb-3 text-secondary fw-semibold">
+                    <i class="bi bi-calendar-check me-2 text-success"></i> Blocked Dates
                 </h5>
-                <ul class="list-group">
+                <ul class="list-group rounded-3 shadow-sm">
                     <li *ngFor="let d of blockedDates"
-                        class="list-group-item d-flex justify-content-between align-items-center">
-                        <span class="text-danger">{{ d | date: 'fullDate' }}</span>
-                        <button mat-raised-button color="warn" (click)="unblockDate(d)">Unblock</button>
+                        class="list-group-item d-flex justify-content-between align-items-center blocked-date">
+                        <span class="fw-semibold text-danger">
+                            <i class="bi bi-slash-circle me-1"></i>
+                            {{ d | date: "fullDate" }}
+                        </span>
+                        <button mat-raised-button color="warn" (click)="unblockDate(d)" class="btn-unblock">
+                            <i class="bi bi-unlock me-1"></i> Unblock
+                        </button>
                     </li>
-                    <li *ngIf="blockedDates.length === 0" class="list-group-item text-muted fst-italic">
-                        <i class="bi bi-info-circle me-1"></i> No blocked dates yet.
+
+                    <!-- Empty State -->
+                    <li *ngIf="blockedDates.length === 0" class="list-group-item text-center text-muted fst-italic">
+                        <i class="bi bi-emoji-smile me-1"></i> No blocked dates yet.
                     </li>
                 </ul>
             </div>

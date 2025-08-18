@@ -22,3 +22,12 @@ export interface PlaceAvailability {
   isBlocked: boolean;
   note?: string | null;
 }
+
+export interface CartReservation {
+  reservationId?: number;
+
+  placeId: number;
+  placeName: string;
+  date: string;
+  price: number;
+}

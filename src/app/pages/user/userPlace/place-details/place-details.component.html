@@ -1,1 +1,69 @@
-<p>place-details works!</p>
+<div class="container py-4" *ngIf="!loading">
+
+    <!-- Error Message -->
+    <div *ngIf="errorMsg" class="alert alert-danger text-center fw-semibold shadow-sm rounded-3">
+        <i class="bi bi-exclamation-triangle me-2"></i>{{ errorMsg }}
+    </div>
+
+    <!-- Main Content -->
+    <div *ngIf="place" class="row g-4">
+
+        <!-- Left Content -->
+        <div class="col-lg-8">
+
+            <!-- Image -->
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                <img *ngIf="place.imageUrl" [src]="imgUrl(place.imageUrl)" class="w-100" alt="Place Image"
+                    style="max-height:420px;object-fit:cover;">
+            </div>
+
+            <!-- Details -->
+            <div class="card border-0 shadow-sm rounded-4 mb-4 p-4 bg-white">
+                <h2 class="fw-bold text-dark mb-2">{{ place.location }}</h2>
+                <p class="text-muted mb-2 d-flex align-items-center">
+                    <i class="bi bi-geo-alt-fill text-primary me-2 fs-5"></i>
+                    {{ place.placeTypeName }}
+                </p>
+                <p class="fs-3 fw-bold text-gradient mb-0">
+                    {{ place.price | currency:'USD' }}
+                </p>
+            </div>
+
+            <!-- Map -->
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <div id="map" style="height:350px;"></div>
+            </div>
+        </div>
+
+        <!-- Right Content (Reservation) -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-lg rounded-4 p-4 sticky-top glass-card" style="top: 90px;">
+
+                <h5 class="fw-bold mb-3 text-center text-primary">
+                    <i class="bi bi-calendar-event me-2"></i>Available Dates
+                </h5>
+
+                <div class="border rounded-3 shadow-sm p-2 bg-light">
+                    <ngb-datepicker [(ngModel)]="selectedDate" [markDisabled]="isDisabledDate" [minDate]="minDate"
+                        [maxDate]="maxDate" (select)="onDateSelect($event)">
+                    </ngb-datepicker>
+                </div>
+
+                <button class="btn btn-gradient w-100 fw-semibold mt-3 py-2 shadow-sm rounded-pill"
+                    [disabled]="!selectedDate || isDisabledDate(selectedDate!)" (click)="reserve()">
+                    <i class="bi bi-check-circle me-2"></i>Reserve Now
+                </button>
+
+                <div class="mt-3 text-success fw-semibold text-center" *ngIf="reserveMsg">
+                    <i class="bi bi-check2-circle me-2"></i>{{ reserveMsg }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading State -->
+<div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
+    <p class="mt-3 text-muted fw-semibold">Loading place details...</p>
+</div>

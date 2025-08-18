@@ -195,6 +195,14 @@ export const routes: Routes = [
               ).then((m) => m.PlaceListComponent),
             title: 'Place',
           },
+          {
+            path: 'PlacesDetails/:id',
+            loadComponent: () =>
+              import(
+                './pages/user/userPlace/place-details/place-details.component'
+              ).then((m) => m.PlaceDetailsComponent),
+            title: 'Place',
+          },
         ],
       },
     ],
