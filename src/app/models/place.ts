@@ -25,7 +25,6 @@ export interface PlaceAvailability {
 
 export interface CartReservation {
   reservationId?: number;
-
   placeId: number;
   placeName: string;
   date: string;

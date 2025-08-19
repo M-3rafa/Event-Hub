@@ -36,6 +36,7 @@ export class UserService {
   }
 
   reservePlace(placeId: string, date: string): Observable<any> {
+    console.log('--' + placeId + '=' + date);
     return this.http.post<any>(`${environment.baseUrl}/User/reserve-place`, {
       placeId,
       date,

@@ -3,7 +3,6 @@ import { CartTicket } from '../../../../models/ticket/cart-ticket';
 import { TicketCartService } from '../../../../core/services/ticket/ticket-cart.service';
 import { CommonModule } from '@angular/common';
 import { CartReservationService } from '../../../../core/services/ticket/Reservation/cart-reservation.service';
-import { PaymentService } from '../../../../core/services/Payment/payment.service';
 import { CartReservation } from '../../../../models/place';
 import { firstValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -19,7 +18,7 @@ declare global {
   selector: 'app-checkout',
   imports: [CommonModule],
   templateUrl: './checkout.component.html',
-  styleUrl: './checkout.component.scss',
+  styleUrls: ['./checkout.component.scss'], // صححت هنا
 })
 export class CheckoutComponent implements OnInit {
   ticketCart: CartTicket[] = [];
@@ -127,13 +126,27 @@ export class CheckoutComponent implements OnInit {
     try {
       const reservationId = await this.ensureReservationId(index);
 
-      const res: any = await this.http
-        .post(`${this.apiBase}/api/User/pay-reservation/${reservationId}`, {})
-        .toPromise();
+      const payload = {
+        reservationId,
+        successUrl: this.checkoutUrl,
+        cancelUrl: this.checkoutUrl,
+      };
 
-      this.payMessage = res?.message || 'Reservation confirmed!';
-      this.reservationCartService.clearCart();
-      this.refreshCarts();
+      const res: any = await firstValueFrom(
+        this.http.post(
+          `${this.apiBase}/api/ReservationPayments/create-reservation-session`,
+          payload
+        )
+      );
+
+      const stripe = window.Stripe(res.publicKey);
+      const result = await stripe.redirectToCheckout({
+        sessionId: res.sessionId,
+      });
+
+      if (result.error) {
+        this.payMessage = result.error.message || 'Stripe redirection failed.';
+      }
     } catch (err: any) {
       this.payMessage = err?.error?.message || 'Failed to pay for reservation.';
     } finally {
@@ -159,7 +172,7 @@ export class CheckoutComponent implements OnInit {
     try {
       const res: any = await firstValueFrom(
         this.http.post(
-          `${this.apiBase}/api/Payments/confirm-reservation-payment`,
+          `${this.apiBase}/api/ReservationPayments/confirm-reservation-payment`,
           { sessionId }
         )
       );

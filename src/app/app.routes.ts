@@ -211,6 +211,14 @@ export const routes: Routes = [
               ).then((m) => m.PlaceDetailsComponent),
             title: 'Place',
           },
+          {
+            path: 'MyReservations',
+            loadComponent: () =>
+              import(
+                './pages/user/userPlace/my-reservations/my-reservations.component'
+              ).then((m) => m.MyReservationsComponent),
+            title: 'Place',
+          },
         ],
       },
     ],

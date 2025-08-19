@@ -23,6 +23,9 @@
                     <a class="nav-link" routerLink="/dashboard/myevents">My Dashboard</a>
                 </li>
                 <li *ngIf="role?.includes('User')" class="nav-item">
+                    <a class="nav-link" routerLink="/User/MyReservations">My Reservations</a>
+                </li>
+                <li *ngIf="role?.includes('User')" class="nav-item">
                     <a class="nav-link" routerLink="/User/MyTickets">My Tickets</a>
                 </li>
                 <li *ngIf="role?.includes('User')" class="nav-item">
