@@ -9,7 +9,7 @@ import { Router, RouterLinkActive, RouterModule } from '@angular/router';
   styleUrl: './sidebar.component.scss',
 })
 export class SidebarComponent {
-  isCollapsed = false;
+  isCollapsed = true;
   router: any;
   constructor() {}
 
