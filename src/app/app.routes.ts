@@ -99,6 +99,14 @@ export const routes: Routes = [
               ).then((m) => m.PlaceAvailabilityComponent),
             title: 'Place Availability',
           },
+          {
+            path: 'ProviderDashboard',
+            loadComponent: () =>
+              import(
+                './pages/serviceProvider/provider-dashboard/provider-dashboard.component'
+              ).then((m) => m.ProviderDashboardComponent),
+            title: 'Place Availability',
+          },
         ],
       },
       {
