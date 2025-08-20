@@ -107,6 +107,14 @@ export const routes: Routes = [
               ).then((m) => m.ProviderDashboardComponent),
             title: 'Place Availability',
           },
+          {
+            path: 'PlaceDashboard',
+            loadComponent: () =>
+              import(
+                './pages/serviceProvider/place-dashboard/place-dashboard.component'
+              ).then((m) => m.PlaceDashboardComponent),
+            title: 'Place Availability',
+          },
         ],
       },
       {

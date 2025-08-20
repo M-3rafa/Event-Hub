@@ -20,7 +20,12 @@
                 <span class="link-text" *ngIf="!isCollapsed">Add New Event</span>
             </a>
         </li>
-
+        <li class="nav-item">
+            <a routerLink='ProviderDashboard' routerLinkActive="active" class="nav-link">
+                <i class="fa fa-chart-area"></i> <!-- My Events Stats -->
+                <span class="link-text" *ngIf="!isCollapsed">My Events Stats</span>
+            </a>
+        </li>
         <li class="nav-item">
             <a routerLink='myPlaces' routerLinkActive="active" class="nav-link">
                 <i class="fa fa-building"></i> <!-- My Place -->
@@ -33,14 +38,16 @@
                 <i class="fa fa-plus-circle"></i> <!-- Add New Place -->
                 <span class="link-text" *ngIf="!isCollapsed">Add New Place</span>
             </a>
-        </li>
-
         <li class="nav-item">
-            <a routerLink='ProviderDashboard' routerLinkActive="active" class="nav-link">
-                <i class="fa fa-chart-bar"></i> <!-- My Events Stats -->
-                <span class="link-text" *ngIf="!isCollapsed">My Events Stats</span>
+            <a routerLink='PlaceDashboard' routerLinkActive="active" class="nav-link">
+                <i class="fa fa-chart-line"></i>
+                <span class="link-text" *ngIf="!isCollapsed">My Place Stats</span>
             </a>
         </li>
+
+
+
+
 
         <li class="nav-item">
             <a href="#" class="nav-link">

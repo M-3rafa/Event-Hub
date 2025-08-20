@@ -3,7 +3,15 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../environment/environment';
 import { UrlServiceService } from '../url/url-service.service';
-
+export interface PlaceReservation {
+  id: number;
+  placeLocation: string;
+  placeType: string;
+  reservedDate: string;
+  price: number;
+  status: string;
+  userId: string;
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -70,5 +78,15 @@ export class ProviderPlaceService {
 
   getPlaceTypes(): Observable<string[]> {
     return this.http.get<string[]>(`${environment.baseUrl}/place-types`);
+  }
+  getMyPlacesStats(): Observable<any> {
+    return this.http.get(
+      `${environment.baseUrl}/ProviderPlaces/my-place-reservations`
+    );
+  }
+  getMyPlaceReservations(): Observable<PlaceReservation[]> {
+    return this.http.get<PlaceReservation[]>(
+      `${environment.baseUrl}/ProviderPlaces/my-place-reservations`
+    );
   }
 }

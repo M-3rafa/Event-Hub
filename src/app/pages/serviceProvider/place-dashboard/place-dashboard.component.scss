@@ -1,0 +1,26 @@
+.search-input {
+  height: 45px; // أكبر ارتفاع للبحث
+  font-size: 1rem; // حجم الخط أكبر
+  border-radius: 0.5rem; // حواف مدورة
+  border: 2px solid #0d6efd; // نفس لون البرنامج (Bootstrap primary)
+  padding-left: 12px;
+}
+
+.search-input:focus {
+  box-shadow: 0 0 5px rgba(13, 110, 253, 0.5); // ظل عند التركيز
+  border-color: #0d6efd;
+  outline: none;
+}
+.card {
+  border-radius: 0.75rem;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.card-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
