@@ -44,7 +44,6 @@ export class MyReservationsComponent implements OnInit {
         },
       });
   }
-
   downloadPdf(reservationId: number) {
     this.downloadingId = reservationId; // 👈 start loading
     this.http
